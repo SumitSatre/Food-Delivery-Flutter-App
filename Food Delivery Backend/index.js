@@ -9,11 +9,6 @@ process.on("uncaughtException", (err) => {
   process.exit(1);
 });
 
-// Load environment variables if not in production
-// if (process.env.NODE_ENV !== "PRODUCTION") {
-//   require("dotenv").config({ path: "backend/config/config.env" });
-// }
-
 // Connect to the database
 connectDatabase();
 
