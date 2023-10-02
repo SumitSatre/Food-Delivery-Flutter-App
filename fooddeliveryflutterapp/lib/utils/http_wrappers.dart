@@ -3,20 +3,20 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 
-const baseUrl = "https://api.ekalakaar.com/api/v1";
+const baseUrl = "https://flutter-fooddelivery-backend.onrender.com/api/v1";
 
 Future<String> getToken() async {
-  return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGU2MzcwNzdmNWNjYTA3ZTM1YmI5MjYiLCJpYXQiOjE2OTQ4NzEwMzMsImV4cCI6MTY5NDk1NzQzM30._-7JLP4Oomt568Sw4CAUh_e6hzqU7lMlu8sRicsQaU8";
+  return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjUxYTM5NTJhMzJlMTlkODYxM2M5YWFkIiwiZW1haWwiOiJzYXVyYWJoQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoic2F1cmFiaCIsInJvbGUiOiJ1c2VyIn0sImlhdCI6MTY5NjIxNzQ2MSwiZXhwIjoxNjk2MzAzODYxfQ.k1tZAjD7lUhN6a7xWkTtcziz4-ftLtTu-4OfoHEKRZs"; // Replace with your actual access token
 }
 
-class ApiHttpResponse {
-  String? message, responceString, token;
+class ApiResponse {
+  String? message, responseString, token;
   String? processStatus, status;
   int? responseCode, apiStatus;
   bool? success;
-  ApiHttpResponse({
+  ApiResponse({
     this.responseCode,
-    this.responceString,
+    this.responseString,
     this.message,
     this.token,
     this.processStatus,
@@ -30,26 +30,30 @@ Future<dynamic> get(String url) async {
     Map<String, String> header = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${await getToken()}',
-      'accept': ' */*',
+      'accept': 'application/json',
     };
 
     http.Response response =
-        await http.get(Uri.parse(baseUrl + url), headers: header);
-    ApiHttpResponse apiResponse = ApiHttpResponse();
-    apiResponse.responseCode = response.statusCode;
-    apiResponse.responceString = response.body;
-    apiResponse.success = true;
-    return jsonDecode(apiResponse.responceString!);
+    await http.get(Uri.parse(baseUrl + url), headers: header);
+
+    if (response.statusCode == 200) {
+      ApiResponse apiResponse = ApiResponse();
+      apiResponse.responseString = response.body;
+      apiResponse.success = true;
+      return jsonDecode(apiResponse.responseString!);
+    } else {
+      throw Exception('Failed to get data: ${response.statusCode}');
+    }
   } on SocketException catch (_) {
-    ApiHttpResponse apiResponse = ApiHttpResponse();
+    ApiResponse apiResponse = ApiResponse();
     apiResponse.responseCode = 401;
-    apiResponse.responceString = json.encode(
+    apiResponse.responseString = json.encode(
         {"success": false, "message": "AppRemoteRoutes.internetConnectionMsg"});
     return apiResponse;
   } catch (e) {
-    ApiHttpResponse apiResponse = ApiHttpResponse();
+    ApiResponse apiResponse = ApiResponse();
     apiResponse.responseCode = 401;
-    apiResponse.responceString = json.encode(
+    apiResponse.responseString = json.encode(
         {"success": false, "message": "AppRemoteRoutes.someThingWentWrong"});
     return apiResponse;
   }
@@ -60,27 +64,26 @@ Future<dynamic> patch(String url, Map<String, dynamic> data) async {
     Map<String, String> header = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${await getToken()}',
-      'accept': ' */*',
+      'accept': 'application/json',
     };
 
     http.Response response = await http.patch(Uri.parse(baseUrl + url),
         headers: header, body: jsonEncode(data));
-    ApiHttpResponse apiResponse = ApiHttpResponse();
+    ApiResponse apiResponse = ApiResponse();
     apiResponse.responseCode = response.statusCode;
-    apiResponse.responceString = response.body;
+    apiResponse.responseString = response.body;
     apiResponse.success = true;
-    return jsonDecode(apiResponse.responceString!);
+    return jsonDecode(apiResponse.responseString!);
   } on SocketException catch (_) {
-    ApiHttpResponse apiResponse = ApiHttpResponse();
+    ApiResponse apiResponse = ApiResponse();
     apiResponse.responseCode = 401;
-
-    apiResponse.responceString = json.encode(
+    apiResponse.responseString = json.encode(
         {"success": false, "message": "AppRemoteRoutes.internetConnectionMsg"});
     return apiResponse;
   } catch (e) {
-    ApiHttpResponse apiResponse = ApiHttpResponse();
+    ApiResponse apiResponse = ApiResponse();
     apiResponse.responseCode = 401;
-    apiResponse.responceString = json.encode(
+    apiResponse.responseString = json.encode(
         {"success": false, "message": "AppRemoteRoutes.someThingWentWrong"});
     return apiResponse;
   }
@@ -88,32 +91,29 @@ Future<dynamic> patch(String url, Map<String, dynamic> data) async {
 
 Future<dynamic> post(String url, Map<String, dynamic> data) async {
   try {
-    Map<String, String> header = {
+    Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${await getToken()}',
-      'accept': ' */*',
+      'Authorization': 'Bearer ${await getToken()}'
     };
 
-    http.Response response = await http.post(Uri.parse(baseUrl + url),
-        headers: header, body: jsonEncode(data));
-    ApiHttpResponse apiResponse = ApiHttpResponse();
-    apiResponse.responseCode = response.statusCode;
-    apiResponse.responceString = response.body;
-    apiResponse.success = true;
-    return jsonDecode(apiResponse.responceString!);
-  } on SocketException catch (_) {
-    ApiHttpResponse apiResponse = ApiHttpResponse();
-    apiResponse.responseCode = 401;
+    http.Response response = await http.post(
+      Uri.parse(baseUrl + url),
+      headers: headers,
+      body: jsonEncode(data),
+    );
 
-    apiResponse.responceString = json.encode(
-        {"success": false, "message": "AppRemoteRoutes.internetConnectionMsg"});
-    return apiResponse;
+    if (response.statusCode == 200) {
+      ApiResponse apiResponse = ApiResponse();
+      apiResponse.responseString = response.body;
+      apiResponse.success = true;
+      return jsonDecode(apiResponse.responseString!);
+    } else {
+      throw Exception('Failed to post data: ${response.statusCode}');
+    }
+  } on SocketException catch (_) {
+    throw Exception('No internet connection');
   } catch (e) {
-    ApiHttpResponse apiResponse = ApiHttpResponse();
-    apiResponse.responseCode = 401;
-    apiResponse.responceString = json.encode(
-        {"success": false, "message": "AppRemoteRoutes.someThingWentWrong"});
-    return apiResponse;
+    throw Exception('Something went wrong: $e');
   }
 }
 
@@ -122,27 +122,26 @@ Future<dynamic> delete(String url) async {
     Map<String, String> header = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${await getToken()}',
-      'accept': ' */*',
+      'accept': 'application/json',
     };
 
     http.Response response =
-        await http.delete(Uri.parse(baseUrl + url), headers: header);
-    ApiHttpResponse apiResponse = ApiHttpResponse();
+    await http.delete(Uri.parse(baseUrl + url), headers: header);
+    ApiResponse apiResponse = ApiResponse();
     apiResponse.responseCode = response.statusCode;
-    apiResponse.responceString = response.body;
+    apiResponse.responseString = response.body;
     apiResponse.success = true;
-    return jsonDecode(apiResponse.responceString!);
+    return jsonDecode(apiResponse.responseString!);
   } on SocketException catch (_) {
-    ApiHttpResponse apiResponse = ApiHttpResponse();
+    ApiResponse apiResponse = ApiResponse();
     apiResponse.responseCode = 401;
-
-    apiResponse.responceString = json.encode(
+    apiResponse.responseString = json.encode(
         {"success": false, "message": "AppRemoteRoutes.internetConnectionMsg"});
     return apiResponse;
   } catch (e) {
-    ApiHttpResponse apiResponse = ApiHttpResponse();
+    ApiResponse apiResponse = ApiResponse();
     apiResponse.responseCode = 401;
-    apiResponse.responceString = json.encode(
+    apiResponse.responseString = json.encode(
         {"success": false, "message": "AppRemoteRoutes.someThingWentWrong"});
     return apiResponse;
   }

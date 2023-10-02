@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fooddeliveryflutterapp/Authentication/controllers/auth_controller.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -10,10 +11,12 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   final formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final pwdController = TextEditingController();
   final nameController = TextEditingController();
 
   bool isObscure = true;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +59,6 @@ class _SignupScreenState extends State<SignupScreen> {
                       children: [
                         TextFormField(
                           controller: nameController,
-                          obscureText: isObscure,
                           validator: (val) {
                             if (val == null || val.isEmpty) {
                               return "Please enter your password";
@@ -101,7 +103,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         SizedBox(height: 20),
 
                         TextFormField(
-                          controller: passwordController,
+                          controller: pwdController,
                           obscureText: isObscure,
                           validator: (val) {
                             if (val == null || val.isEmpty) {
@@ -139,9 +141,43 @@ class _SignupScreenState extends State<SignupScreen> {
 
                         ElevatedButton(
                           onPressed: () {
-                            if (formKey.currentState!.validate()) {
-                              // Perform your login logic here
-                            }
+                              String name = nameController.text;
+                              String email = emailController.text;
+                              String password = pwdController.text;
+
+                              print("${name}");
+
+                              if (name.isEmpty || email.isEmpty || password.isEmpty) {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text('Error'),
+                                      content: Text('Please fill in all the fields.'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('OK'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              }
+
+                              else{
+                                var data = {
+                                  'name': name,
+                                  'email': email,
+                                  'password': password,
+                                };
+
+                                registerUser(data);
+                              }
+
+
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blueAccent,

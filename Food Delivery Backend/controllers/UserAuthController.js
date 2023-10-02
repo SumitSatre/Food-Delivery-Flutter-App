@@ -32,7 +32,16 @@ exports.RegisterUser = async (req, res, next) => {
       profilePicture: profilePicture || null
     });
 
-    res.status(201).json({ user: newUser, success: true });
+    const user = {
+      id: newUser._id,
+      email: newUser.email,
+      username: newUser.name,
+      role : 'user'
+    };
+
+    const authToken = jwt.sign({ user }, process.env.SECRETKEY, { expiresIn: '86400s' });
+
+    res.status(201).json({ success: true ,statusCode:200 ,  authToken});
 
     next();
   } catch (error) {
@@ -69,7 +78,7 @@ exports.LoginUser = async (req, res, next) => {
 
     const authToken = jwt.sign({ user }, process.env.SECRETKEY, { expiresIn: '86400s' });
 
-    return res.status(200).json({ success: true, authToken });
+    return res.status(200).json({ success: true,statusCode:200, authToken });
   } catch (error) {
     next(error);
   }

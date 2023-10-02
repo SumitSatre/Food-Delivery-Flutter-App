@@ -1,17 +1,16 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:fooddeliveryflutterapp/utils/services/shared_preferences_service.dart';
+import 'package:fooddeliveryflutterapp/utils/services/shared_preferences_service.dart';// Import the icon library you want to use
 
-class SpalshScreen extends StatefulWidget {
-  const SpalshScreen({super.key});
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
   static const String routeName = "splash-screen";
 
   @override
-  State<SpalshScreen> createState() => _SplashScreenState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SpalshScreen> {
+class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
@@ -24,9 +23,10 @@ class _SplashScreenState extends State<SpalshScreen> {
     );
     SharedPreferenceService().checkLogin().then((value) {
       if (value) {
-        Navigator.pushNamed(context, HomePage.routeName);
+        Navigator.pushNamed(context, "login-screen"); // HomePage.routeName
       } else {
-        Navigator.pushNamed(context, );
+        // Replace this with the route you want to navigate to when not logged in
+        Navigator.pushNamed(context, "login-screen");
       }
     });
   }
@@ -68,9 +68,10 @@ class _SplashScreenState extends State<SpalshScreen> {
             SizedBox(
               width: width * 0.5,
               height: height * 0.2,
-              child: const Image(
-                image: AssetImage('assets/images/eK_Logo_Transparent.png'),
-                fit: BoxFit.fill,
+              child: Icon(
+                Icons.rocket_launch,
+                size: 100.0,
+                color: Colors.blue, // Change the color to your preference
               ),
             ),
             SizedBox(
@@ -79,8 +80,8 @@ class _SplashScreenState extends State<SpalshScreen> {
               child: Text(
                 'eKalakaar',
                 textAlign: TextAlign.center,
-                style: GoogleFonts.sansitaSwashed(
-                  color: kprimaryColor,
+                style: TextStyle(
+                  color: Colors.blue, // Change the color to your preference
                   fontSize: 65 * textScale,
                   fontWeight: FontWeight.w400,
                 ),
@@ -92,7 +93,7 @@ class _SplashScreenState extends State<SpalshScreen> {
               child: Text(
                 'Art Beyond Entertainment',
                 textAlign: TextAlign.center,
-                style: GoogleFonts.sansitaSwashed(
+                style: TextStyle(
                   color: Colors.black,
                   fontSize: 15,
                   fontWeight: FontWeight.w400,
@@ -103,11 +104,10 @@ class _SplashScreenState extends State<SpalshScreen> {
             Container(
               width: width * 0.53,
               height: height * 0.38,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/images/Onboarding_picture.png'),
-                  fit: BoxFit.cover,
-                ),
+              child: Icon(
+                Icons.assistant, // Replace with your desired icon
+                size: 150.0,
+                color: Colors.green, // Change the color to your preference
               ),
             ),
           ],

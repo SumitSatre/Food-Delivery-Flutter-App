@@ -77,7 +77,7 @@ exports.registerHouseholdManager = async (req, res, next) => {
 
     const authToken = jwt.sign({ user }, process.env.SECRETKEY, { expiresIn: '86400s' });
 
-    res.status(200).json({ success: true, message: "Household data saved successfully", authToken });
+    res.status(200).json({ success: true,statusCode:200,  message: "Household data saved successfully", authToken });
 
     postSaveCopyMiddleware(household);
 
@@ -127,7 +127,7 @@ exports.loginHouseholdManager = async (req, res, next) => {
       const authToken = jwt.sign({ user }, process.env.SECRETKEY, { expiresIn: '86400s' });
   
       // Optionally, you can return a success response
-      res.status(200).json({ success : true , message: "Household data saved successfully" , authToken});
+      res.status(200).json({ success : true ,statusCode:200,  message: "Household data saved successfully" , authToken});
 
     } catch (error) {
       // Handle any errors that occur during data validation or saving

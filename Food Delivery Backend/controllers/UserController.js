@@ -10,7 +10,7 @@ exports.getUserProfile = async (req , res , next)=>{
         }
         else{
             const userData = await UserModel.findOne({email : authData.user.email});
-            return res.status(200).json({success : true , userData}); 
+            return res.status(200).json({success : true ,statusCode:200,  userData}); 
         }
     })
 }
@@ -22,7 +22,7 @@ exports.getAllHouseholds = async (req , res , next)=>{
         }
         else{
             const userData = await HouseHoldModel.find();
-            return res.status(200).json({success : true , userData}); 
+            return res.status(200).json({success : true ,statusCode:200,  userData}); 
         }
     })
 }
