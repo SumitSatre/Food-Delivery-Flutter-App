@@ -22,7 +22,8 @@ const foodProductsHouseHoldSchema = new mongoose.Schema({
   pricing: {
     cuisines: [
       {
-        cuisineName: {
+        cuisineName: { 
+          
           type: String
         },
         price: {
