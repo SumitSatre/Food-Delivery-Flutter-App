@@ -1,38 +1,32 @@
 import 'dart:convert';
-import 'dart:io';
-import 'package:fooddeliveryflutterapp/utils/http_wrappers.dart';
+import 'package:fooddeliveryflutterapp/utils/services/shared_preferences_service.dart';
 import 'package:http/http.dart' as http;
 
-Future<Map<String , dynamic>> registerUser(Map<String, String> payload) async {
-
-    //  Applied, In-Progress, Hired, Rejected
-  var response = await http.post(
-    Uri.parse("https://flutter-app-backend-qy7f.onrender.com/api/user/signup"),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: json.encode(payload),
-  );
-
-  var responseData = json.decode(response.body);
-
-  // If post api fetched correctly
-  if (responseData['success']) {
-
-    var pref = await SharedPreferences.getInstance();
-    await pref.setString("authToken", responseData["authToken"]);
-    await pref.setString("emailToken", email);
-
-    await Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => MainPage()),
+Future<bool> registerUser(Map<String, String> payload) async {
+  try {
+    final response = await http.post(
+      Uri.parse("https://flutter-fooddelivery-backend.onrender.com/api/v1/registerUser"),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: json.encode(payload),
     );
+
+      var responseData = json.decode(response.body);
+      print(responseData.toString());
+
+      if (responseData['success']) {
+
+        print("not ok");
+        SharedPreferenceService().setLogin(responseData['authToken']);
+        print("ok");
+        return true;
+      } else {
+        // Registration failed, handle the error
+        throw Exception('Registration failed: ${responseData['message']}');
+      }
+  } catch (e) {
+    // Handle any exceptions that may occur during the request
+    throw Exception('An error occurred during registration: $e');
   }
-
-    // print(body);
-    if (body["success"] != true) {
-      throw Exception("something went wrong here");
-    }
-    return {"status": true};
-
 }

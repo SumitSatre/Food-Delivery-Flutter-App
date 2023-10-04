@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fooddeliveryflutterapp/Authentication/controllers/auth_controller.dart';
+import 'dart:convert';
+import 'package:fooddeliveryflutterapp/utils/services/shared_preferences_service.dart';
+import 'package:http/http.dart' as http;
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -16,7 +18,66 @@ class _SignupScreenState extends State<SignupScreen> {
 
   bool isObscure = true;
 
+  Future<void> registerUser () async {
+    String name = nameController.text;
+    String email = emailController.text;
+    String password = pwdController.text;
 
+    if (name.isEmpty || email.isEmpty || password.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('Please fill in all the fields.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      var data = {
+        'name': name,
+        'email': email,
+        'password': password,
+      };
+
+      try {
+        final response = await http.post(
+          Uri.parse("https://flutter-fooddelivery-backend.onrender.com/api/v1/registerUser"),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: json.encode(data),
+        );
+
+        var responseData = json.decode(response.body);
+        print(responseData.toString());
+
+        if (responseData['success']) {
+
+          print("not ok");
+          SharedPreferenceService().setLogin(responseData['authToken']);
+          print("ok");
+
+          Navigator.pushNamed(context,  "login");
+        } else {
+          // Registration failed, handle the error
+          throw Exception('Registration failed: ${responseData['message']}');
+        }
+      } catch (e) {
+        // Handle any exceptions that may occur during the request
+        throw Exception('An error occurred during registration: $e');
+      }
+
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -140,43 +201,65 @@ class _SignupScreenState extends State<SignupScreen> {
                         SizedBox(height: 20),
 
                         ElevatedButton(
-                          onPressed: () {
-                              String name = nameController.text;
-                              String email = emailController.text;
-                              String password = pwdController.text;
+                          onPressed:  () async{
+                            String name = nameController.text;
+                            String email = emailController.text;
+                            String password = pwdController.text;
 
-                              print("${name}");
+                            if (name.isEmpty || email.isEmpty || password.isEmpty) {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('Error'),
+                                    content: Text('Please fill in all the fields.'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('OK'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            } else {
+                              var data = {
+                                'name': name,
+                                'email': email,
+                                'password': password,
+                              };
 
-                              if (name.isEmpty || email.isEmpty || password.isEmpty) {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: Text('Error'),
-                                      content: Text('Please fill in all the fields.'),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: Text('OK'),
-                                        ),
-                                      ],
-                                    );
+                              try {
+                                final response = await http.post(
+                                  Uri.parse("https://flutter-fooddelivery-backend.onrender.com/api/v1/registerUser"),
+                                  headers: {
+                                    'Content-Type': 'application/json',
                                   },
+                                  body: json.encode(data),
                                 );
+
+                                var responseData = json.decode(response.body);
+                                print(responseData.toString());
+
+                                if (responseData['success']) {
+
+                                  print("not ok");
+                                  SharedPreferenceService().setLogin(responseData['authToken']);
+                                  print("ok");
+
+                                  Navigator.pushNamed(context,  "login");
+                                } else {
+                                  // Registration failed, handle the error
+                                  throw Exception('Registration failed: ${responseData['message']}');
+                                }
+                              } catch (e) {
+                                // Handle any exceptions that may occur during the request
+                                throw Exception('An error occurred during registration: $e');
                               }
 
-                              else{
-                                var data = {
-                                  'name': name,
-                                  'email': email,
-                                  'password': password,
-                                };
-
-                                registerUser(data);
-                              }
-
+                            }
 
                           },
                           style: ElevatedButton.styleFrom(

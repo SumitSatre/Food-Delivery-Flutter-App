@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:fooddeliveryflutterapp/utils/services/shared_preferences_service.dart';
+import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -109,9 +112,62 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         SizedBox(height: 20),
                         ElevatedButton(
-                          onPressed: () {
-                            if (formKey.currentState!.validate()) {
-                              // Perform your login logic here
+                          onPressed: () async {
+                            String email = emailController.text;
+                            String password = passwordController.text;
+
+                            if ( email.isEmpty || password.isEmpty) {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('Error'),
+                                    content: Text('Please fill in all the fields.'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('OK'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            } else {
+                              var data = {
+                                'email': email,
+                                'password': password,
+                              };
+
+                              try {
+                                final response = await http.post(
+                                  Uri.parse("https://flutter-fooddelivery-backend.onrender.com/api/v1/loginUser"),
+                                  headers: {
+                                    'Content-Type': 'application/json',
+                                  },
+                                  body: json.encode(data),
+                                );
+
+                                var responseData = json.decode(response.body);
+                                print(responseData.toString());
+
+                                if (responseData['success']) {
+
+                                  print("not ok");
+                                  SharedPreferenceService().setLogin(responseData['authToken']);
+                                  print("ok");
+
+                                  Navigator.pushNamed(context,  "login");
+                                } else {
+                                  // Registration failed, handle the error
+                                  throw Exception('Registration failed: ${responseData['message']}');
+                                }
+                              } catch (e) {
+                                // Handle any exceptions that may occur during the request
+                                throw Exception('An error occurred during registration: $e');
+                              }
+
                             }
                           },
                           style: ElevatedButton.styleFrom(

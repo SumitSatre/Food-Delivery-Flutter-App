@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:fooddeliveryflutterapp/utils/api_http_response.dart';
 import 'package:http/http.dart' as http;
 
 const baseUrl = "https://flutter-fooddelivery-backend.onrender.com/api/v1";
@@ -146,3 +147,40 @@ Future<dynamic> delete(String url) async {
     return apiResponse;
   }
 }
+
+Future<ApiHttpResponse> callPostMethod(
+    Map<String, dynamic> authData, String apiUrl) async {
+  try {
+    String url = baseUrl + apiUrl;
+    print(url);
+    Map<String, String> header = {
+      'Content-Type': 'application/json',
+      'accept': ' */*'
+    };
+
+    http.Response response = await http.post(Uri.parse(url),
+        body: json.encode(authData), headers: header);
+    ApiHttpResponse apiResponse = ApiHttpResponse();
+
+    apiResponse.responseCode = response.statusCode;
+    apiResponse.responceString = response.body;
+
+    return apiResponse;
+  } on SocketException catch (_) {
+    ApiHttpResponse apiResponse = ApiHttpResponse();
+    apiResponse.responseCode = 401;
+    apiResponse.message = _.message;
+    apiResponse.responceString =
+        json.encode({"success": false, "message": _.message});
+    return apiResponse;
+  } catch (e) {
+    print("catch error $e");
+    ApiHttpResponse apiResponse = ApiHttpResponse();
+    apiResponse.responseCode = 401;
+    apiResponse.message = "Something went wrong.";
+    apiResponse.responceString = json.encode(
+        {"success": false, "message": "Something went wrong!! Please check internet connection."});
+    return apiResponse;
+  }
+}
+

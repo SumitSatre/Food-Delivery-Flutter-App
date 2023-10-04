@@ -26,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
         Navigator.pushNamed(context, "login-screen"); // HomePage.routeName
       } else {
         // Replace this with the route you want to navigate to when not logged in
-        Navigator.pushNamed(context, "login-screen");
+        Navigator.pushNamed(context, "home");
       }
     });
   }
