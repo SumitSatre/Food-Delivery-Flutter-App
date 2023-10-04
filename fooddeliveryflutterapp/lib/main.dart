@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fooddeliveryflutterapp/Authentication/controllers/login_provider.dart';
+import 'package:fooddeliveryflutterapp/Authentication/controllers/register_provider.dart';
 import 'package:fooddeliveryflutterapp/utils/app_routes.dart';
 import 'package:provider/provider.dart';
 
@@ -18,10 +19,13 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => LoginProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => RegisterProvider(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: 'splash-screen',
+        initialRoute: 'signup',
         routes: AppRoutes.routes
 
       ),

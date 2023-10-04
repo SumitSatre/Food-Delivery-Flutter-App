@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fooddeliveryflutterapp/Authentication/controllers/login_provider.dart';
 import 'dart:convert';
 import 'package:fooddeliveryflutterapp/utils/services/shared_preferences_service.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -12,15 +14,22 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final formKey = GlobalKey<FormState>();
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  bool isObscure = true;
 
   @override
   Widget build(BuildContext context) {
+
+    final controller = Provider.of<LoginProvider>(context, listen: false);
+
     return Scaffold(
       backgroundColor: Colors.blueGrey,
-      body: SingleChildScrollView(
+      body: Consumer<LoginProvider>(builder: (context, ref, child)
+    {
+      return ref.isLoading
+          ? const Center(
+        child: CircularProgressIndicator(
+        ),
+      )
+          : SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -56,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Column(
                       children: [
                         TextFormField(
-                          controller: emailController,
+                          controller: controller.emailController,
                           validator: (val) {
                             if (val == null || val.isEmpty) {
                               return "Please enter your email";
@@ -77,8 +86,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         SizedBox(height: 20),
                         TextFormField(
-                          controller: passwordController,
-                          obscureText: isObscure,
+                          controller: controller.passwoordController,
+                          obscureText: controller.isObscure,
                           validator: (val) {
                             if (val == null || val.isEmpty) {
                               return "Please enter your password";
@@ -94,11 +103,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             suffixIcon: GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  isObscure = !isObscure;
+                                  controller.togglePasswordVisibility();
                                 });
                               },
                               child: Icon(
-                                isObscure
+                                controller.isObscure
                                     ? Icons.visibility_off
                                     : Icons.visibility,
                                 color: Colors.black,
@@ -113,62 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(height: 20),
                         ElevatedButton(
                           onPressed: () async {
-                            String email = emailController.text;
-                            String password = passwordController.text;
-
-                            if ( email.isEmpty || password.isEmpty) {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text('Error'),
-                                    content: Text('Please fill in all the fields.'),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: Text('OK'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            } else {
-                              var data = {
-                                'email': email,
-                                'password': password,
-                              };
-
-                              try {
-                                final response = await http.post(
-                                  Uri.parse("https://flutter-fooddelivery-backend.onrender.com/api/v1/loginUser"),
-                                  headers: {
-                                    'Content-Type': 'application/json',
-                                  },
-                                  body: json.encode(data),
-                                );
-
-                                var responseData = json.decode(response.body);
-                                print(responseData.toString());
-
-                                if (responseData['success']) {
-
-                                  print("not ok");
-                                  SharedPreferenceService().setLogin(responseData['authToken']);
-                                  print("ok");
-
-                                  Navigator.pushNamed(context,  "login");
-                                } else {
-                                  // Registration failed, handle the error
-                                  throw Exception('Registration failed: ${responseData['message']}');
-                                }
-                              } catch (e) {
-                                // Handle any exceptions that may occur during the request
-                                throw Exception('An error occurred during registration: $e');
-                              }
-
-                            }
+                            controller.login(context);
                           },
                           style: ElevatedButton.styleFrom(
                             primary: Colors.blueAccent,
@@ -223,7 +177,9 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ],
         ),
-      ),
+      );
+  }
+      )
     );
   }
 }

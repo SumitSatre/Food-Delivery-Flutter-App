@@ -66,11 +66,11 @@ class LoginProvider extends ChangeNotifier {
     String res = "Some error occurred";
     ApiHttpResponse response = await callPostMethod(
         {"email": emailController.text, "password": passwoordController.text},
-        "auth/login");
+        "/loginUser");
     final data = jsonDecode(response.responceString!);
-    print("thi is $data");
+    // print("thi is $data");
     if (response.responseCode == 200) {
-      _accessToken = data["data"]["accessToken"];
+      _accessToken = data["authToken"];
       notifyListeners();
       debugPrint(_accessToken);
       res = "Login success";
