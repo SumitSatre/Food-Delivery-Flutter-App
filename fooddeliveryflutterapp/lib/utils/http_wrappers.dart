@@ -179,8 +179,37 @@ Future<ApiHttpResponse> callPostMethod(
     apiResponse.responseCode = 401;
     apiResponse.message = "Something went wrong.";
     apiResponse.responceString = json.encode(
-        {"success": false, "message": "Something went wrong!! Please check internet connection."});
+        {"success": false, "message":"Something went wrong."});
     return apiResponse;
   }
 }
 
+Future<ApiHttpResponse> callUserGetMethod(String apiUrl, String token) async {
+  try {
+    String url = baseUrl + apiUrl;
+
+    Map<String, String> header = {
+      'Content-Type': 'application/json',
+      'authorization': 'Bearer $token',
+      'accept': ' */*',
+    };
+
+    http.Response response = await http.get(Uri.parse(url), headers: header);
+    ApiHttpResponse apiResponse = ApiHttpResponse();
+    apiResponse.responseCode = response.statusCode;
+    apiResponse.responceString = response.body;
+    return apiResponse;
+  } on SocketException catch (_) {
+    ApiHttpResponse apiResponse = ApiHttpResponse();
+    apiResponse.responseCode = 401;
+    apiResponse.responceString = json.encode(
+        {"success": false, "message": "Something went wrong."});
+    return apiResponse;
+  } catch (e) {
+    ApiHttpResponse apiResponse = ApiHttpResponse();
+    apiResponse.responseCode = 401;
+    apiResponse.responceString = json.encode(
+        {"success": false, "message": "Something went wrong."});
+    return apiResponse;
+  }
+}

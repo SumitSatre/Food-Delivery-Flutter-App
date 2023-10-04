@@ -1,17 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:fooddeliveryflutterapp/home/controllers/home_controller.dart';
+import 'package:provider/provider.dart';
 
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    callInit();
+  }
+
+  void callInit() {
+    Provider.of<HomeProvider>(context, listen: false).init();
+  }
+
   List foods = [
     "Burger",
     "Pizza",
     "Snacks",
     "Water",
   ];
+
   List foods2 = [
     "Chicken Burger",
     "Cheese Pizza",
   ];
+
   List<Color> bgColor = [
     const Color(0xFFFBDCDA),
     const Color(0xFFD4EEF3),
