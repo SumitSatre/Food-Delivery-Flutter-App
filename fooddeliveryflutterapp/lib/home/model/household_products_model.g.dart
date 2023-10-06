@@ -9,7 +9,7 @@ part of 'household_products_model.dart';
 HouseHoldProductModel _$HouseHoldProductModelFromJson(
         Map<String, dynamic> json) =>
     HouseHoldProductModel(
-      id: json['id'] as String,
+      id: json['_id'] as String,
       pricing: json['pricing'] == null
           ? null
           : Pricing.fromJson(json['pricing'] as Map<String, dynamic>),
@@ -35,7 +35,7 @@ HouseHoldProductModel _$HouseHoldProductModelFromJson(
 Map<String, dynamic> _$HouseHoldProductModelToJson(
         HouseHoldProductModel instance) =>
     <String, dynamic>{
-      'id': instance.id,
+      '_id': instance.id,
       'pricing': instance.pricing,
       'householdName': instance.householdName,
       'email': instance.email,
@@ -67,23 +67,23 @@ Map<String, dynamic> _$PricingToJson(Pricing instance) => <String, dynamic>{
 Cuisine _$CuisineFromJson(Map<String, dynamic> json) => Cuisine(
       cuisineName: json['cuisineName'] as String?,
       price: (json['price'] as num?)?.toDouble(),
-      id: json['id'] as String?,
+      id: json['_id'] as String?,
     );
 
 Map<String, dynamic> _$CuisineToJson(Cuisine instance) => <String, dynamic>{
       'cuisineName': instance.cuisineName,
       'price': instance.price,
-      'id': instance.id,
+      '_id': instance.id,
     };
 
 Dish _$DishFromJson(Map<String, dynamic> json) => Dish(
       dishName: json['dishName'] as String?,
       price: (json['price'] as num?)?.toDouble(),
-      id: json['id'] as String?,
+      id: json['_id'] as String?,
     );
 
 Map<String, dynamic> _$DishToJson(Dish instance) => <String, dynamic>{
       'dishName': instance.dishName,
       'price': instance.price,
-      'id': instance.id,
+      '_id': instance.id,
     };

@@ -93,9 +93,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             margin: const EdgeInsets.all(5),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15),
-                                image: const DecorationImage(
-                                    image: AssetImage("images/ouieiek.jpg"),
-                                    fit: BoxFit.cover)),
+                                // image: const DecorationImage(
+                                //     image: AssetImage("images/ouieiek.jpg"),
+                                //     fit: BoxFit.cover)
+                              ),
                           ),
                           Positioned(
                             left: 40,
@@ -185,7 +186,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(
                   height: 220,
                   child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
+                    scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     itemCount: controller.houseHoldFoodsProducts?.length ?? 0,
                     itemBuilder: (context, index) {
