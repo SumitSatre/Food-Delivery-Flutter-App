@@ -187,29 +187,37 @@ Future<ApiHttpResponse> callPostMethod(
 Future<ApiHttpResponse> callUserGetMethod(String apiUrl, String token) async {
   try {
     String url = baseUrl + apiUrl;
+    print(url);
 
     Map<String, String> header = {
       'Content-Type': 'application/json',
-      'authorization': 'Bearer $token',
-      'accept': ' */*',
+      'authorization': 'bearer $token',
+      'accept': '*/*',
     };
 
-    http.Response response = await http.get(Uri.parse(url), headers: header);
+
+
+    print("Done");
+
+    final response = await http.get(Uri.parse(url), headers: header);
+    print("This is response : ${json.decode(response.body).toString()}");
     ApiHttpResponse apiResponse = ApiHttpResponse();
-    apiResponse.responseCode = response.statusCode;
     apiResponse.responceString = response.body;
     return apiResponse;
   } on SocketException catch (_) {
     ApiHttpResponse apiResponse = ApiHttpResponse();
     apiResponse.responseCode = 401;
-    apiResponse.responceString = json.encode(
-        {"success": false, "message": "Something went wrong."});
+    apiResponse.message = _.message;
+    apiResponse.responceString =
+        json.encode({"success": false, "message": _.message});
     return apiResponse;
   } catch (e) {
+    print("catch error $e");
     ApiHttpResponse apiResponse = ApiHttpResponse();
     apiResponse.responseCode = 401;
+    apiResponse.message = "Something went wrong.";
     apiResponse.responceString = json.encode(
-        {"success": false, "message": "Something went wrong."});
+        {"success": false, "message":"Something went wrong"});
     return apiResponse;
   }
 }

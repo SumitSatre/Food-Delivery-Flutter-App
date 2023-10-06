@@ -23,10 +23,10 @@ class _SplashScreenState extends State<SplashScreen> {
     );
     SharedPreferenceService().checkLogin().then((value) {
       if (value) {
-        Navigator.pushNamed(context, "login-screen"); // HomePage.routeName
+        Navigator.pushNamed(context, "login"); // HomePage.routeName
       } else {
         // Replace this with the route you want to navigate to when not logged in
-        Navigator.pushNamed(context, "home");
+        Navigator.pushNamed(context, "login");
       }
     });
   }

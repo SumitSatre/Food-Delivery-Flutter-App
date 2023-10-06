@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require('cors');
 const app = express();
 
 const errorMiddleware = require("./middleware/error");
@@ -19,6 +20,7 @@ app.use((req , res , next)=>{
     next();
 });
 
+app.use(cors());
 
 // Route Imports
 
