@@ -1,6 +1,7 @@
 const ErrorHandler = require("../errorHandler");
 const UserModel = require("../models/UserModel");
 const HouseHoldModel = require("../models/HouseHoldModel");
+const FoodProductsHouseHoldModel = require("../models/FoodProductsHouseHoldModel");
 const jwt = require("jsonwebtoken");
 
 exports.getUserProfile = async (req , res , next)=>{
@@ -21,7 +22,7 @@ exports.getAllHouseholds = async (req , res , next)=>{
             return next(new ErrorHandler("Token is invalid" , 401));
         }
         else{
-            const userData = await HouseHoldModel.find();
+            const userData = await FoodProductsHouseHoldModel.find();
             return res.status(200).json({success : true ,statusCode:200,  userData}); 
         }
     })

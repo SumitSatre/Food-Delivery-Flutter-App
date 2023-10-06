@@ -187,21 +187,15 @@ Future<ApiHttpResponse> callPostMethod(
 Future<ApiHttpResponse> callUserGetMethod(String apiUrl, String token) async {
   try {
     String url = baseUrl + apiUrl;
-    print(url);
 
     Map<String, String> header = {
-      'Content-Type': 'application/json',
-      'authorization': 'bearer $token',
-      'accept': '*/*',
+      'authorization': 'bearer $token'
     };
-
-
-
-    print("Done");
 
     final response = await http.get(Uri.parse(url), headers: header);
     print("This is response : ${json.decode(response.body).toString()}");
     ApiHttpResponse apiResponse = ApiHttpResponse();
+    apiResponse.responseCode = response.statusCode;
     apiResponse.responceString = response.body;
     return apiResponse;
   } on SocketException catch (_) {

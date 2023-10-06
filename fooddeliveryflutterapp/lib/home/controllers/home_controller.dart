@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:fooddeliveryflutterapp/home/model/household_products_model.dart';
 import 'package:fooddeliveryflutterapp/home/model/user_model.dart';
 import 'package:fooddeliveryflutterapp/utils/api_http_response.dart';
 import 'package:fooddeliveryflutterapp/utils/http_wrappers.dart';
@@ -12,8 +13,11 @@ class HomeProvider extends ChangeNotifier{
   UserModel? _userModel;
   UserModel? get userModel => _userModel;
 
+  List<HouseHoldProductModel>? houseHoldFoodsProducts;
+
   void init() async {
     await sendUserGetRequest();
+    await getHouseHoldFoodProducts();
   }
 
   Future<void> sendUserGetRequest() async {
@@ -22,18 +26,33 @@ class HomeProvider extends ChangeNotifier{
     ApiHttpResponse response =
     await callUserGetMethod("/UserProfile", accessToken);
     final json = jsonDecode(response.responceString!);
-    debugPrint("This is profile json : ${json.toString()}");
+    // debugPrint("This is profile json : ${json.toString()}");
 
-    final data = json["data"];
-    debugPrint("This is profile data : ${data.toString()}");
+    final data = json["userData"];
+    // debugPrint("This is profile data : ${data.toString()}");
 
-    //if (response.responseCode == 200) {
-    //  _userModel = UserModel.fromJson(data["data"]);
-    //  notifyListeners();
-    //} else {
-    //  notifyListeners();
-    //}
+    if (response.responseCode == 200) {
+      _userModel = UserModel.fromJson(data);
+      notifyListeners();
+    } else {
+      notifyListeners();
+    }
   }
 
+  Future<void> getHouseHoldFoodProducts() async {
+    String accessToken = await SharedPreferenceService().getAccessToken();
+    print(accessToken);
+    ApiHttpResponse response =
+    await callUserGetMethod("/allHouseholds", accessToken);
+    final json = jsonDecode(response.responceString!);
+
+    if (response.responseCode == 200) {
+      // Assuming you have a static method to parse JSON into a list of HouseHoldProductModel
+      houseHoldFoodsProducts = HouseHoldProductModel.listFromJson(json["userData"]);
+      notifyListeners();
+    } else {
+      notifyListeners();
+    }
+  }
 
 }
