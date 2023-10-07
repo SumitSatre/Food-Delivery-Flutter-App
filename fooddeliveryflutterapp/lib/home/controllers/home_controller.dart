@@ -15,6 +15,8 @@ class HomeProvider extends ChangeNotifier{
 
   List<HouseHoldProductModel>? houseHoldFoodsProducts;
 
+  late bool isDataFetched = false;
+
   void init() async {
     await sendUserGetRequest();
     await getHouseHoldFoodProducts();
@@ -22,7 +24,7 @@ class HomeProvider extends ChangeNotifier{
 
   Future<void> sendUserGetRequest() async {
     String accessToken = await SharedPreferenceService().getAccessToken();
-    print(accessToken);
+    // print(accessToken);
     ApiHttpResponse response =
     await callUserGetMethod("/UserProfile", accessToken);
     final json = jsonDecode(response.responceString!);
@@ -41,7 +43,7 @@ class HomeProvider extends ChangeNotifier{
 
   Future<void> getHouseHoldFoodProducts() async {
     String accessToken = await SharedPreferenceService().getAccessToken();
-    print(accessToken);
+    // print(accessToken);
     ApiHttpResponse response =
     await callUserGetMethod("/allHouseholds", accessToken);
     final json = jsonDecode(response.responceString!);
@@ -49,6 +51,9 @@ class HomeProvider extends ChangeNotifier{
     if (response.responseCode == 200) {
       // Assuming you have a static method to parse JSON into a list of HouseHoldProductModel
       houseHoldFoodsProducts = HouseHoldProductModel.listFromJson(json["userData"]);
+
+      isDataFetched = true;
+
       notifyListeners();
     } else {
       notifyListeners();

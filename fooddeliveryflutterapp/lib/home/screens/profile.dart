@@ -9,262 +9,159 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  // TextEditingController nameController = TextEditingController();
-  // TextEditingController emailController = TextEditingController();
-  // TextEditingController mobileController = TextEditingController();
-  // TextEditingController cityController = TextEditingController();
-  // TextEditingController ageController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController mobileController = TextEditingController();
+  TextEditingController cityController = TextEditingController();
+  TextEditingController ageController = TextEditingController();
   // File? profilePic;
-
-  // void saveUser() async {
-  //   String name = nameController.text.trim();
-  //   String email = emailController.text.trim();
-  //   String phone = mobileController.text.trim();
-  //   String city = cityController.text.trim();
-  //   String ageString = ageController.text.trim();
-  //   int age = int.parse(ageString);
-
-  //   if (name.isNotEmpty &&
-  //       email.isNotEmpty &&
-  //       phone.isNotEmpty &&
-  //       city.isNotEmpty &&
-  //       ageString.isNotEmpty &&
-  //       profilePic != null) {
-  //     UploadTask uploadTask = FirebaseStorage.instance
-  //         .ref()
-  //         .child("profilepictures")
-  //         .child(const Uuid().v1())
-  //         .putFile(profilePic!);
-
-  //     uploadTask.snapshotEvents.listen((snapshot) {
-  //       double percentage =
-  //           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-  //       debugPrint(percentage.toString());
-  //     });
-
-  //     TaskSnapshot taskSnapshot = await uploadTask;
-  //     String downloadUrl = await taskSnapshot.ref.getDownloadURL();
-
-  //     Map<String, dynamic> userData = {
-  //       "name": name,
-  //       "email": email,
-  //       "phone": phone,
-  //       "city": city,
-  //       "age": age,
-  //       "profilepic": downloadUrl,
-  //     };
-
-  //     FirebaseFirestore.instance.collection("users").add(userData);
-  //     debugPrint("User created!");
-  //   } else {
-  //     debugPrint("Please fill all the fields!");
-  //   }
-  // }
 
   bool isObscurePassword = true;
 
   @override
   Widget build(BuildContext context) {
-    var isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.arrow_back),
+      appBar: AppBar(
+        title: Text(
+          'Profile',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
-          title: Text(
-            'Profile',
-            style: Theme.of(context).textTheme.headline4,
-          ),
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.settings,
-                color: Colors.white,
+        ),
+        backgroundColor: Colors.lightBlue,
+        elevation: 0, // Remove app bar shadow
+      ),
+      body: Container(
+        padding: const EdgeInsets.all(16),
+        child: ListView(
+          children: [
+            Center(
+              child: GestureDetector(
+                onTap: () {
+                  // Add image selection logic here
+                },
+                child: CircleAvatar(
+                  // backgroundImage:
+                  //     (profilePic != null) ? FileImage(profilePic!) : null,
+                  radius: 60,
+                  backgroundColor: Colors.grey,
+                ),
               ),
+            ),
+            SizedBox(height: 20),
+            buildTextField(
+              controller: nameController,
+              label: 'Full Name',
+              hint: 'Enter your name',
+            ),
+            buildTextField(
+              controller: emailController,
+              label: 'Email',
+              hint: 'Enter your email',
+            ),
+            buildTextField(
+              controller: mobileController,
+              label: 'Phone Number',
+              hint: 'Enter your phone number',
+            ),
+            buildTextField(
+              controller: cityController,
+              label: 'City',
+              hint: 'Enter your city',
+            ),
+            buildTextField(
+              controller: ageController,
+              label: 'Age',
+              hint: 'Enter your age',
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    // Add cancel logic here
+                  },
+                  child: Text(
+                    'CANCEL',
+                    style: TextStyle(
+                      fontSize: 15,
+                      letterSpacing: 2,
+                      color: Colors.black,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.white,
+                    onPrimary: Colors.black,
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      side: BorderSide(color: Colors.black),
+                    ),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    // Add save logic here
+                  },
+                  child: Text(
+                    'SAVE',
+                    style: TextStyle(
+                      fontSize: 15,
+                      letterSpacing: 2,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.lightBlue,
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
-        body: Container(
-            padding: const EdgeInsets.only(left: 15, top: 20, right: 15),
-            child: GestureDetector(
-              onTap: () {
-                FocusScope.of(context).unfocus();
-              },
-              child: ListView(
-                children: [
-                  CupertinoButton(
-                    onPressed: () async {
-                      // XFile? selectedImage = await ImagePicker().pickImage(
-                      //   source: ImageSource.gallery,
-                      // );
-                      // if (selectedImage != null) {
-                      //   File convertedFile = File(selectedImage.path);
-                      //   setState(() {
-                      //     profilePic = convertedFile;
-                      //   });
-                      //   debugPrint("Image selected");
-                      // } else {
-                      //   debugPrint("No image selected");
-                      // }
-                    },
-                    padding: EdgeInsets.zero,
-                    child: const CircleAvatar(
-                      // backgroundImage:
-                      //     (profilePic != null) ? FileImage(profilePic!) : null,
-                      radius: 40,
-                      backgroundColor: Colors.grey,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(bottom: 30),
-                    child: TextField(
-                      // controller: nameController,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.only(bottom: 5),
-                        labelText: 'Full Name',
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        hintText: 'Enter your name',
-                        hintStyle: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(bottom: 30),
-                    child: TextField(
-                      // controller: emailController,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.only(bottom: 5),
-                        labelText: 'Email',
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        hintText: 'Enter your email',
-                        hintStyle: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(bottom: 30),
-                    child: TextField(
-                      // controller: mobileController,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.only(bottom: 5),
-                        labelText: 'Phone Number',
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        hintText: 'Enter your phone number',
-                        hintStyle: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(bottom: 30),
-                    child: TextField(
-                      // controller: cityController,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.only(bottom: 5),
-                        labelText: 'City',
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        hintText: 'Enter your city',
-                        hintStyle: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(bottom: 30),
-                    child: TextField(
-                      // controller: ageController,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.only(bottom: 5),
-                        labelText: 'Age',
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        hintText: 'Enter your age',
-                        hintStyle: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      OutlinedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, 'login');
-                        },
-                        child: const Text(
-                          'CANCEL',
-                          style: TextStyle(
-                            fontSize: 15,
-                            letterSpacing: 2,
-                            color: Colors.black,
-                          ),
-                        ),
-                        style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(horizontal: 50),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          // saveUser();
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => HomePageFinal(
-                          //       name: nameController.text.trim(),
-                          //       profilePic: profilePic,
-                          //     ),
-                          //   ),
-                          // );
-                        },
-                        child: const Text(
-                          'SAVE',
-                          style: TextStyle(
-                            fontSize: 15,
-                            letterSpacing: 2,
-                            color: Colors.white,
-                          ),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.blue,
-                          padding: const EdgeInsets.symmetric(horizontal: 50),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            ),
-        );
-    }
+      ),
+    );
+  }
+
+  Widget buildTextField({
+    required TextEditingController controller,
+    required String label,
+    required String hint,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: TextField(
+        controller: controller,
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+          labelText: label,
+          labelStyle: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.lightBlue,
+          ),
+          hintText: hint,
+          hintStyle: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.grey,
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Colors.lightBlue),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Colors.lightBlue),
+          ),
+        ),
+      ),
+    );
+  }
 }

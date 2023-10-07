@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:fooddeliveryflutterapp/home/controllers/home_controller.dart';
 import 'package:provider/provider.dart';
@@ -22,11 +23,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
 
-  List crouselImages = [
-    "https://source.unsplash.com/random/900x700/?food",
-    "https://source.unsplash.com/random/900x700/?food",
-    "https://source.unsplash.com/random/900x700/?food",
-    "https://source.unsplash.com/random/900x700/?food",
+  List foods2 = [
+    "Chicken Burger",
+    "Cheese Pizza",
+  ];
+
+  List<String> crouselImages = [
+    "https://images.unsplash.com/photo-1467003909585-2f8a72700288?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=700&ixid=MnwxfDB8MXxyYW5kb218MHx8Zm9vZHx8fHx8fDE2OTY2NzA5MjI&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=900",
+    "https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=700&ixid=MnwxfDB8MXxyYW5kb218MHx8Zm9vZHx8fHx8fDE2OTY2NzA3NDc&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=900",
+    "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=700&ixid=MnwxfDB8MXxyYW5kb218MHx8Zm9vZHx8fHx8fDE2OTY2NzA3Njg&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=900",
+    "https://images.unsplash.com/photo-1475090169767-40ed8d18f67d?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=700&ixid=MnwxfDB8MXxyYW5kb218MHx8Zm9vZHx8fHx8fDE2OTY2NzA4MzQ&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=900",
   ];
 
   List<Color> bgColor = [
@@ -50,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 50,
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -99,17 +105,23 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                           ),
                           Positioned(
-                            left: 40,
-                            child: Container(
-                              margin: const EdgeInsets.all(5),
-                              padding: const EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.white, width: 3),
-                                color: Colors.redAccent,
-                                shape: BoxShape.circle,
+                            right: 10,
+                            child: InkWell(
+                              onTap: (){
+                                Navigator.pushNamed(context, "profile");
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.all(5),
+                                padding: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey, width: 1),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(Icons.person),
                               ),
                             ),
-                          )
+                          ),
+
                         ],
                       )
                     ],
@@ -158,14 +170,45 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 20,
                 ),
                 Container(
-                  height: 200,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
-                      child: Image.network(crouselImages[0]),
-                    ),
-                  ),
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  child: CarouselSlider(
+                      items: crouselImages.map((item) {
+                        return Builder(
+                            builder: (BuildContext context) {
+                              return Container(
+                                child: Card(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(2)),
+                                  child: Stack(
+                                    children: [
+                                      ClipRRect(
+                                          borderRadius:
+                                          BorderRadius.circular(2),
+                                          child: Image.network(
+                                            item,
+                                            fit: BoxFit.cover,
+                                            height: 250,
+                                            width: 300,
+                                          )),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            });
+                      }).toList(),
+                      options: CarouselOptions(
+                          height: 220,
+                          aspectRatio: 16 / 9,
+                          viewportFraction: 1,
+                          autoPlay: true,
+                          enlargeCenterPage: false
+                        // enableInfiniteScroll:false
+                      )),
+                ),
+
+                const SizedBox(
+                  height: 20,
                 ),
 
 
@@ -183,19 +226,22 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 220,
+
+                if (!controller.isDataFetched) CircularProgressIndicator() else SizedBox(
                   child: ListView.builder(
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
-                    itemCount: controller.houseHoldFoodsProducts?.length ?? 0,
+                    itemCount: controller.houseHoldFoodsProducts!.length ,
                     itemBuilder: (context, index) {
                       return InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.pushNamed(context, "house-hold-details-page" , arguments: controller.houseHoldFoodsProducts![index]) ;
+                        },
                         child: Container(
+                          height: 250,
                           width: MediaQuery.of(context).size.width / 1.4,
                           margin: const EdgeInsets.only(
-                              left: 15, top: 5, bottom: 5, right: 5),
+                              left: 20, top: 5, bottom: 15, right: 20),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             color: Colors.white,
@@ -215,17 +261,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                   topLeft: Radius.circular(10),
                                   topRight: Radius.circular(10),
                                 ),
-                                child: Image.network(controller.houseHoldFoodsProducts?[index]?.photos?[0] ?? "" , height: 120,
-                                    width: MediaQuery.of(context).size.width / 1.4,
-                                    fit: BoxFit.cover,),
-
+                                child: Image.network(
+                                  controller.houseHoldFoodsProducts?[index]?.photos?.isNotEmpty == true
+                                      ? controller.houseHoldFoodsProducts![index]!.photos![0] ?? ""
+                                      : "https://source.unsplash.com/random/900x700/?food",
+                                  height: 120,
+                                  width: MediaQuery.of(context).size.width / 1.4,
+                                  fit: BoxFit.cover,
                                 ),
+                              ),
 
 
                               Padding(
                                 padding: const EdgeInsets.only(left: 10),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -240,8 +290,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         const SizedBox(
                                           height: 5,
                                         ),
-                                        const Text(
-                                          "Fast Food",
+                                         Text(
+                                          controller.houseHoldFoodsProducts?[index]?.location ?? "",
                                           style: TextStyle(
                                             fontSize: 16,
                                             color: Colors.black45,
@@ -251,7 +301,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           height: 5,
                                         ),
                                         Row(
-                                          children: const [
+                                          children:  [
                                             Icon(
                                               Icons.star,
                                               color: Colors.redAccent,
@@ -261,22 +311,56 @@ class _HomeScreenState extends State<HomeScreen> {
                                               width: 2,
                                             ),
                                             Text(
-                                              "4.7",
+                                                controller.houseHoldFoodsProducts?[index]?.rating.toString() ?? "",
                                               style: TextStyle(
                                                 fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            Text(
-                                              "(941 Rating)",
-                                              style: TextStyle(
-                                                color: Colors.black45,
                                               ),
                                             )
                                           ],
                                         )
                                       ],
                                     ),
-
+                                    Column(
+                                      children: [
+                                        Padding(padding: const EdgeInsets.all(8),
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.location_on,
+                                                color: Colors.redAccent,
+                                                size: 20,
+                                              ),
+                                              SizedBox(width: 2,),
+                                              Text(
+                                                "1 Km",
+                                                style: TextStyle(
+                                                  color: Colors.black45,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(height: 10,),
+                                        Container(
+                                          padding: const EdgeInsets.all(12),
+                                          decoration: const BoxDecoration(
+                                              color: Colors.redAccent,
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(10),
+                                              )
+                                          ),
+                                          child:  Text(
+                      controller.houseHoldFoodsProducts?[index]?.pricing?.cuisines?[0].price.toString() ?? "",
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    )
                                   ],
                                 ),
                               )
@@ -288,6 +372,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                   ),
                 )
+
               ],
             ),
             ),

@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:convert';
-import 'dart:js_util';
 
 import 'package:flutter/material.dart';
 import 'package:fooddeliveryflutterapp/utils/api_http_response.dart';
