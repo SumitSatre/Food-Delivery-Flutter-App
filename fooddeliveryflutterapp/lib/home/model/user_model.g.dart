@@ -10,7 +10,6 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       id: json['_id'] as String,
       name: json['name'] as String,
       email: json['email'] as String,
-      password: json['password'] as String,
       isAdmin: json['isAdmin'] as bool,
       phone: json['phone'] as String?,
       profilePicture: json['profilePicture'] as String?,
@@ -28,10 +27,9 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
     );
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
-      'id': instance.id,
+      '_id': instance.id,
       'name': instance.name,
       'email': instance.email,
-      'password': instance.password,
       'isAdmin': instance.isAdmin,
       'phone': instance.phone,
       'profilePicture': instance.profilePicture,
@@ -97,27 +95,13 @@ Map<String, dynamic> _$CartItemToJson(CartItem instance) => <String, dynamic>{
     };
 
 Pricing _$PricingFromJson(Map<String, dynamic> json) => Pricing(
-      cuisines: (json['cuisines'] as List<dynamic>?)
-          ?.map((e) => Cuisine.fromJson(e as Map<String, dynamic>))
-          .toList(),
       dishes: (json['dishes'] as List<dynamic>?)
           ?.map((e) => Dish.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
 Map<String, dynamic> _$PricingToJson(Pricing instance) => <String, dynamic>{
-      'cuisines': instance.cuisines,
       'dishes': instance.dishes,
-    };
-
-Cuisine _$CuisineFromJson(Map<String, dynamic> json) => Cuisine(
-      cuisineName: json['cuisineName'] as String,
-      price: (json['price'] as num).toDouble(),
-    );
-
-Map<String, dynamic> _$CuisineToJson(Cuisine instance) => <String, dynamic>{
-      'cuisineName': instance.cuisineName,
-      'price': instance.price,
     };
 
 Dish _$DishFromJson(Map<String, dynamic> json) => Dish(

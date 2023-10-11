@@ -7,7 +7,6 @@ class UserModel {
   String id;
   String name;
   String email;
-  String password;
   bool isAdmin;
   String? phone;
   String? profilePicture;
@@ -21,7 +20,6 @@ class UserModel {
     required this.id,
     required this.name,
     required this.email,
-    required this.password,
     required this.isAdmin,
     this.phone,
     this.profilePicture,
@@ -41,7 +39,6 @@ class UserModel {
     String? id,
     String? name,
     String? email,
-    String? password,
     bool? isAdmin,
     String? phone,
     String? profilePicture,
@@ -55,7 +52,6 @@ class UserModel {
       id: id ?? this.id,
       name: name ?? this.name,
       email: email ?? this.email,
-      password: password ?? this.password,
       isAdmin: isAdmin ?? this.isAdmin,
       phone: phone ?? this.phone,
       profilePicture: profilePicture ?? this.profilePicture,
@@ -178,11 +174,9 @@ class CartItem {
 
 @JsonSerializable()
 class Pricing {
-  List<Cuisine>? cuisines;
   List<Dish>? dishes;
 
   Pricing({
-    this.cuisines,
     this.dishes,
   });
 
@@ -192,50 +186,23 @@ class Pricing {
   Map<String, dynamic> toJson() => _$PricingToJson(this);
 
   Pricing copyWith({
-    List<Cuisine>? cuisines,
     List<Dish>? dishes,
   }) {
     return Pricing(
-      cuisines: cuisines ?? this.cuisines,
       dishes: dishes ?? this.dishes,
     );
   }
 }
 
-@JsonSerializable()
-class Cuisine {
-  String cuisineName;
-  double price;
-
-  Cuisine({
-    required this.cuisineName,
-    required this.price,
-  });
-
-  factory Cuisine.fromJson(Map<String, dynamic> json) =>
-      _$CuisineFromJson(json);
-
-  Map<String, dynamic> toJson() => _$CuisineToJson(this);
-
-  Cuisine copyWith({
-    String? cuisineName,
-    double? price,
-  }) {
-    return Cuisine(
-      cuisineName: cuisineName ?? this.cuisineName,
-      price: price ?? this.price,
-    );
-  }
-}
 
 @JsonSerializable()
 class Dish {
-  String dishName;
-  double price;
+  String? dishName;
+  double? price;
 
   Dish({
-    required this.dishName,
-    required this.price,
+    this.dishName,
+    this.price,
   });
 
   factory Dish.fromJson(Map<String, dynamic> json) =>

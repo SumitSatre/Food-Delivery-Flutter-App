@@ -19,17 +19,6 @@ const CartItemSchema = new mongoose.Schema({
       },
     
       pricing: {
-        cuisines: [
-          {
-            cuisineName: { 
-              
-              type: String
-            },
-            price: {
-              type: Number
-            },
-          },
-        ],
         dishes: [
           {
             dishName: {

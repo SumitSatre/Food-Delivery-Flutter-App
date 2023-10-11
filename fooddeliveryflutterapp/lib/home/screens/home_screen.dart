@@ -22,12 +22,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 
-
-  List foods2 = [
-    "Chicken Burger",
-    "Cheese Pizza",
-  ];
-
   List<String> crouselImages = [
     "https://images.unsplash.com/photo-1467003909585-2f8a72700288?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=700&ixid=MnwxfDB8MXxyYW5kb218MHx8Zm9vZHx8fHx8fDE2OTY2NzA5MjI&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=900",
     "https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=700&ixid=MnwxfDB8MXxyYW5kb218MHx8Zm9vZHx8fHx8fDE2OTY2NzA3NDc&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=900",
@@ -227,7 +221,169 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
 
-                if (!controller.isDataFetched) CircularProgressIndicator() else SizedBox(
+                FutureBuilder(
+                  future: controller.getHouseHoldFoodProducts(),
+                    builder: (context , snapshot){
+
+                      if(snapshot.connectionState == ConnectionState.waiting){
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+
+                      else if(controller.isError){
+                        return Center(
+                          child: Text("Something got wrong!!"),
+                        );
+                      }
+
+                      else if(controller.isDataFetched){
+                        return SizedBox(
+                          child: ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemCount: controller.houseHoldFoodsProducts!.length ,
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                onTap: () {
+                                  Navigator.pushNamed(context, "house-hold-details-page" , arguments: controller.houseHoldFoodsProducts![index]) ;
+                                },
+                                child: Container(
+                                  height: 250,
+                                  width: MediaQuery.of(context).size.width / 1.4,
+                                  margin: const EdgeInsets.only(
+                                      left: 20, top: 5, bottom: 15, right: 20),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.white,
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Colors.black12,
+                                        blurRadius: 4,
+                                        spreadRadius: 2,
+                                      ),
+                                    ],
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(10),
+                                          topRight: Radius.circular(10),
+                                        ),
+                                        child: Image.network(
+                                          controller.houseHoldFoodsProducts?[index]?.photos?.isNotEmpty == true
+                                              ? controller.houseHoldFoodsProducts![index]!.photos![0] ?? ""
+                                              : "https://source.unsplash.com/random/900x700/?food",
+                                          height: 120,
+                                          width: MediaQuery.of(context).size.width / 1.4,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+
+
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 10),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  controller.houseHoldFoodsProducts?[index]?.householdName ?? "",
+                                                  style: const TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 5,
+                                                ),
+                                                Text(
+                                                  controller.houseHoldFoodsProducts?[index]?.location ?? "",
+                                                  style: TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.black45,
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 5,
+                                                ),
+                                                Row(
+                                                  children:  [
+                                                    Icon(
+                                                      Icons.star,
+                                                      color: Colors.redAccent,
+                                                      size: 20,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 2,
+                                                    ),
+                                                    Text(
+                                                      controller.houseHoldFoodsProducts?[index]?.rating.toString() ?? "",
+                                                      style: TextStyle(
+                                                        fontWeight: FontWeight.bold,
+                                                      ),
+                                                    )
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                            Column(
+                                              children: [
+                                                Padding(padding: const EdgeInsets.all(8),
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.location_on,
+                                                        color: Colors.redAccent,
+                                                        size: 20,
+                                                      ),
+                                                      SizedBox(width: 2,),
+                                                      Text(
+                                                        "1 Km",
+                                                        style: TextStyle(
+                                                          color: Colors.black45,
+                                                          fontWeight: FontWeight.w500,
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 10,),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      }
+
+                      else{
+                        return Center(
+                          child: Text("Something error"),
+                        );
+                      }
+                    }
+                )
+
+              ],
+            ),
+            ),
+        );
+    }
+}
+
+/* SizedBox(
                   child: ListView.builder(
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
@@ -342,23 +498,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ),
                                         ),
                                         const SizedBox(height: 10,),
-                                        Container(
-                                          padding: const EdgeInsets.all(12),
-                                          decoration: const BoxDecoration(
-                                              color: Colors.redAccent,
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(10),
-                                              )
-                                          ),
-                                          child:  Text(
-                      controller.houseHoldFoodsProducts?[index]?.pricing?.cuisines?[0].price.toString() ?? "",
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white
-                                            ),
-                                          ),
-                                        )
                                       ],
                                     )
                                   ],
@@ -371,11 +510,4 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     },
                   ),
-                )
-
-              ],
-            ),
-            ),
-        );
-    }
-}
+                ) */

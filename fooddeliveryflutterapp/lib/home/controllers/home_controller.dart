@@ -16,10 +16,10 @@ class HomeProvider extends ChangeNotifier{
   List<HouseHoldProductModel>? houseHoldFoodsProducts;
 
   late bool isDataFetched = false;
+  late bool isError = false;
 
   void init() async {
     await sendUserGetRequest();
-    await getHouseHoldFoodProducts();
   }
 
   Future<void> sendUserGetRequest() async {
@@ -34,6 +34,7 @@ class HomeProvider extends ChangeNotifier{
     // debugPrint("This is profile data : ${data.toString()}");
 
     if (response.responseCode == 200) {
+      print(response.responceString );
       _userModel = UserModel.fromJson(data);
       notifyListeners();
     } else {
@@ -56,8 +57,21 @@ class HomeProvider extends ChangeNotifier{
 
       notifyListeners();
     } else {
+      isError = true;
       notifyListeners();
     }
   }
+
+  Future<void> addItemInCart(CartItem foodItem) async {
+    List<CartItem> updatedCart = List<CartItem>.from(_userModel!.myCart ?? []);
+    updatedCart.add(foodItem);
+
+    _userModel = _userModel!.copyWith(
+      myCart: updatedCart,
+    );
+
+    notifyListeners();
+  }
+
 
 }

@@ -82,11 +82,9 @@ class HouseHoldProductModel {
 
 @JsonSerializable()
 class Pricing {
-  List<Cuisine>? cuisines;
   List<Dish>? dishes;
 
   Pricing({
-     this.cuisines,
      this.dishes,
   });
 
@@ -96,42 +94,10 @@ class Pricing {
   Map<String, dynamic> toJson() => _$PricingToJson(this);
 
   Pricing copyWith({
-    List<Cuisine>? cuisines,
     List<Dish>? dishes,
   }) {
     return Pricing(
-      cuisines: cuisines ?? this.cuisines,
       dishes: dishes ?? this.dishes,
-    );
-  }
-}
-
-@JsonSerializable()
-class Cuisine {
-  String? cuisineName;
-  double? price;
-  String? id;
-
-  Cuisine({
-    required this.cuisineName,
-    required this.price,
-    required this.id,
-  });
-
-  factory Cuisine.fromJson(Map<String, dynamic> json) =>
-      _$CuisineFromJson(json);
-
-  Map<String, dynamic> toJson() => _$CuisineToJson(this);
-
-  Cuisine copyWith({
-    String? cuisineName,
-    double? price,
-    String? id,
-  }) {
-    return Cuisine(
-      cuisineName: cuisineName ?? this.cuisineName,
-      price: price ?? this.price,
-      id: id ?? this.id,
     );
   }
 }
