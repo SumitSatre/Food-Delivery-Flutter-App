@@ -14,8 +14,7 @@ const CartItemSchema = new mongoose.Schema({
         required: true,
       },
       about: {
-        type: String,
-        required: true,
+        type: String
       },
     
       pricing: {
@@ -40,12 +39,10 @@ const CartItemSchema = new mongoose.Schema({
         default: false,
       },
       deliveryRadius: {
-        type: Number,
-        required: true,
+        type: Number
       },
       deliveryFee: {
-        type: Number,
-        required: true,
+        type: Number
       },
       acceptablePaymentMethods: [String],
       foodPreparationTime: {
