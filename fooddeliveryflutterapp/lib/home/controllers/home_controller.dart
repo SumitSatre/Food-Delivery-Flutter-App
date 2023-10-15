@@ -1,11 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:fooddeliveryflutterapp/home/model/household_products_model.dart';
 import 'package:fooddeliveryflutterapp/home/model/user_model.dart';
 import 'package:fooddeliveryflutterapp/utils/api_http_response.dart';
 import 'package:fooddeliveryflutterapp/utils/http_wrappers.dart';
 import 'package:fooddeliveryflutterapp/utils/services/shared_preferences_service.dart';
+import 'package:fooddeliveryflutterapp/utils/snackBar.dart';
 import 'package:provider/provider.dart';
 
 class HomeProvider extends ChangeNotifier{
@@ -63,6 +65,17 @@ class HomeProvider extends ChangeNotifier{
       isError = true;
       notifyListeners();
     }
+  }
+
+  void updateProfile(BuildContext context) async {
+    String accessToken = await SharedPreferenceService().getAccessToken();
+    print(jsonEncode(userModel!.toJson()));
+    ApiHttpResponse response = await callUserPatchMethod(
+        userModel!.toJson(), 'updateUserData', accessToken);
+    if (response.responseCode == 200) {
+      showSnackBar(context, "Profile updated successfully", Colors.green);
+    }
+    debugPrint(response.responceString);
   }
 
   Future<void> addItemInCart(CartItem foodItem) async {

@@ -89,3 +89,35 @@ Future<ApiHttpResponse> callUserGetMethod(String apiUrl, String token) async {
     return apiResponse;
   }
 }
+
+Future<ApiHttpResponse> callUserPatchMethod(
+    Map authData, String apiUrl, String token) async {
+  try {
+    String url = baseUrl + apiUrl;
+
+    Map<String, String> header = {
+      'Content-Type': 'application/json',
+      'authorization': 'Bearer $token',
+    };
+
+    http.Response response = await http.patch(Uri.parse(url),
+        body: json.encode(authData), headers: header);
+    ApiHttpResponse apiResponse = ApiHttpResponse();
+    apiResponse.responseCode = response.statusCode;
+    apiResponse.responceString = response.body;
+
+    return apiResponse;
+  } on SocketException catch (_) {
+    ApiHttpResponse apiResponse = ApiHttpResponse();
+    apiResponse.responseCode = 401;
+    apiResponse.responceString = json.encode(
+        {"success": false, "message": _.message});
+    return apiResponse;
+  } catch (e) {
+    ApiHttpResponse apiResponse = ApiHttpResponse();
+    apiResponse.responseCode = 401;
+    apiResponse.responceString = json.encode(
+        {"success": false, "message": "Something went wrong"});
+    return apiResponse;
+  }
+}
