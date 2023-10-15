@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:fooddeliveryflutterapp/home/controllers/home_controller.dart';
+import 'package:fooddeliveryflutterapp/home/screens/cart/cart_screen.dart';
 import 'package:provider/provider.dart';
 
 
@@ -82,7 +83,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 color: Colors.redAccent,
                               )
                             ],
-                          )
+                          ),
+                          
+                          TextButton(onPressed: (){
+                            Navigator.pushNamed(context, "cart-screen");
+                          }, child: Text("Cart"))
                         ],
                       ),
                       Stack(

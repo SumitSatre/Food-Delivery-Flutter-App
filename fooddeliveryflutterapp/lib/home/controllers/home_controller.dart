@@ -73,5 +73,32 @@ class HomeProvider extends ChangeNotifier{
     notifyListeners();
   }
 
+ //Future<void> removeItemInCart(CartItem foodItem) async {
+ //  if (_userModel != null && _userModel!.myCart != null) {
+ //    List<CartItem> updatedCart = List<CartItem>.from(_userModel!.myCart);
+
+ //    // Remove the specific item from the cart based on a condition, for example, matching by some property like dishName.
+ //    updatedCart.removeWhere((item) => item.dishName == foodItem.pricing.dishes);
+
+ //    _userModel = _userModel!.copyWith(
+ //      myCart: updatedCart,
+ //    );
+
+ //    notifyListeners();
+ //  }
+ // }
+
+
+  Future<void> addItemInMyOrders(MyOrder foodItem) async {
+    List<MyOrder> updatedMyOrders = List<MyOrder>.from(_userModel!.myOrders ?? []);
+    updatedMyOrders.add(foodItem);
+
+    _userModel = _userModel!.copyWith(
+      myOrders: updatedMyOrders,
+    );
+
+    notifyListeners();
+  }
+
 
 }

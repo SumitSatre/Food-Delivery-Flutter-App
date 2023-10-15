@@ -1,6 +1,7 @@
 import 'package:fooddeliveryflutterapp/Authentication/loginPage.dart';
 import 'package:fooddeliveryflutterapp/Authentication/signupPage.dart';
 import 'package:fooddeliveryflutterapp/Authentication/splash_screen.dart';
+import 'package:fooddeliveryflutterapp/home/screens/cart/cart_screen.dart';
 import 'package:fooddeliveryflutterapp/home/screens/home_screen.dart';
 import 'package:fooddeliveryflutterapp/home/screens/household_detail_screen.dart';
 import 'package:fooddeliveryflutterapp/home/screens/profile.dart';
@@ -12,6 +13,7 @@ class AppRoutes {
     "home" : (context) => HomeScreen(),
     "profile" : (context) => ProfilePage(),
     "splash-screen" : (context) => SplashScreen(),
-    "house-hold-details-page" : (context) => HouseHoldDetailPage()
+    "house-hold-details-page" : (context) => HouseHoldDetailPage(),
+    "cart-screen" : (context) => CartPage(),
   };
 }

@@ -1,60 +1,5 @@
 const mongoose = require("mongoose");
 
-const CartItemSchema = new mongoose.Schema({
-    householdName: {
-        type: String,
-        required: true,
-      },
-      email: {
-        type: String,
-        required: true,
-      },
-      location: {
-        type: String,
-        required: true,
-      },
-      about: {
-        type: String
-      },
-    
-      pricing: {
-        dishes: [
-          {
-            dishName: {
-              type: String
-            },
-            price: {
-              type: Number
-            },
-          },
-        ],
-      },
-    
-      rating: {
-        type: Number,
-        default: 0,
-      },
-      kitchenCertification: {
-        type: Boolean,
-        default: false,
-      },
-      deliveryRadius: {
-        type: Number
-      },
-      deliveryFee: {
-        type: Number
-      },
-      acceptablePaymentMethods: [String],
-      foodPreparationTime: {
-        type: Number,
-      },
-      allergenInformation: [String],
-      photos: [String],
-    quantity: {
-        type: Number
-    }
-});
-
 const UserSchema = new mongoose.Schema({
     name:{
         type : String,
@@ -82,10 +27,22 @@ const UserSchema = new mongoose.Schema({
     profilePicture: String,
 
     address: {
-        street: String,
-        city: String,
-        state: String,
-        pincode: String,
+        street: {
+          type : String,
+          default :""
+        },
+        city: {
+          type : String,
+          default :""
+        },
+        state: {
+          type : String,
+          default :""
+        },
+        pincode: {
+          type : String,
+          default :""
+        },
       },
       
     role : {
@@ -94,17 +51,82 @@ const UserSchema = new mongoose.Schema({
         immutable : true
     },
 
-    myCart: [CartItemSchema],
+    myCart: [
+      {
+        householdName: {
+          type: String,
+          required: true,
+        },
+        householdId : {
+          type: String,
+          required : true
+        },
+        email: {
+          type: String,
+          required: true,
+        },
+        location: {
+          type: String,
+          required: true,
+        },
+        dishName: {
+          type: String
+        },
+        price: {
+          type: Number
+        },
+        about: {
+          type: String
+        },
+        image:{
+          type : String
+        },
+        quantity:{
+          type : Number
+        }
+      }
+    ],
 
     myOrders: [
-        {
-            items: [CartItemSchema],
-            orderDate: {
-                type: Date,
-                default: Date.now
-            }
-        }
-    ]
+      {
+        householdName: {
+          type: String,
+          required: true,
+        },
+        householdId : {
+          type: String,
+          required : true
+        },
+        email: {
+          type: String,
+          required: true,
+        },
+        location: {
+          type: String,
+          required: true,
+        },
+        dishName: {
+          type: String
+        },
+        price: {
+          type: Number
+        },
+        about: {
+          type: String
+        },
+        image:{
+          type : String
+        },
+        quantity:{
+          type : Number
+        },
+        date: {
+          type: Date,
+          default: Date.now,
+        },
+        
+      }
+    ],
       
 });
 
