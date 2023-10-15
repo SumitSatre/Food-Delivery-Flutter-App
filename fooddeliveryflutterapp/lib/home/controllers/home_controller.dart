@@ -13,7 +13,7 @@ class HomeProvider extends ChangeNotifier{
   UserModel? _userModel;
   UserModel? get userModel => _userModel;
 
-  List<HouseHoldProductModel>? houseHoldFoodsProducts;
+  List<FoodProductsHouseholdModel>? houseHoldFoodsProducts;
 
   late bool isDataFetched = false;
   late bool isError = false;
@@ -31,7 +31,7 @@ class HomeProvider extends ChangeNotifier{
     // debugPrint("This is profile json : ${json.toString()}");
 
     final data = json["userData"];
-    // debugPrint("This is profile data : ${data.toString()}");
+    debugPrint("This is profile data : ${data.toString()}");
 
     if (response.responseCode == 200) {
       print(response.responceString );
@@ -48,10 +48,11 @@ class HomeProvider extends ChangeNotifier{
     ApiHttpResponse response =
     await callUserGetMethod("/allHouseholds", accessToken);
     final json = jsonDecode(response.responceString!);
+    // print("This is data : $json");
 
     if (response.responseCode == 200) {
       // Assuming you have a static method to parse JSON into a list of HouseHoldProductModel
-      houseHoldFoodsProducts = HouseHoldProductModel.listFromJson(json["userData"]);
+      houseHoldFoodsProducts = FoodProductsHouseholdModel.listFromJson(json["userData"]);
 
       isDataFetched = true;
 
@@ -73,20 +74,56 @@ class HomeProvider extends ChangeNotifier{
     notifyListeners();
   }
 
- //Future<void> removeItemInCart(CartItem foodItem) async {
- //  if (_userModel != null && _userModel!.myCart != null) {
- //    List<CartItem> updatedCart = List<CartItem>.from(_userModel!.myCart);
+  Future<void> addItemsInCart(List<CartItem> itemsToAdd) async {
+    // Create a copy of the existing cart items
+    List<CartItem> updatedCart = List<CartItem>.from(_userModel!.myCart ?? []);
 
- //    // Remove the specific item from the cart based on a condition, for example, matching by some property like dishName.
- //    updatedCart.removeWhere((item) => item.dishName == foodItem.pricing.dishes);
+    // Loop through the items to add
+    for (CartItem itemToAdd in itemsToAdd) {
+      // Check if the item is already in the cart
+      bool itemAlreadyInCart = false;
+      for (int i = 0; i < updatedCart.length; i++) {
+        if (updatedCart[i].dishName == itemToAdd.dishName) {
+          // Item is already in the cart, increase its quantity
+          updatedCart[i] = updatedCart[i].copyWith(
+            quantity: updatedCart[i].quantity + itemToAdd.quantity,
+          );
+          itemAlreadyInCart = true;
+          break;
+        }
+      }
 
- //    _userModel = _userModel!.copyWith(
- //      myCart: updatedCart,
- //    );
+      if (!itemAlreadyInCart) {
+        // Item is not in the cart, add it
+        updatedCart.add(itemToAdd);
+      }
+    }
 
- //    notifyListeners();
- //  }
- // }
+    // Update the user's cart with the modified list
+    _userModel = _userModel!.copyWith(
+      myCart: updatedCart,
+    );
+
+    // Notify listeners of the change
+    notifyListeners();
+  }
+
+
+  Future<void> removeItemInCart(CartItem foodItem) async {
+    if (_userModel != null && _userModel!.myCart != null) {
+      List<CartItem> updatedCart = List<CartItem>.from(_userModel!.myCart as Iterable);
+
+      // Remove the specific item from the cart based on a condition, for example, matching by some property like dishName.
+      updatedCart.removeWhere((item) => item.dishName == foodItem.dishName);
+
+      _userModel = _userModel!.copyWith(
+        myCart: updatedCart,
+      );
+
+      notifyListeners();
+    }
+  }
+
 
 
   Future<void> addItemInMyOrders(MyOrder foodItem) async {

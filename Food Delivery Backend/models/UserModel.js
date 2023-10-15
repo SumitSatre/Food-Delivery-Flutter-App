@@ -24,7 +24,9 @@ const UserSchema = new mongoose.Schema({
         type: String
       },
 
-    profilePicture: String,
+    profilePicture: {
+      type: String
+    },
 
     address: {
         street: {
@@ -57,10 +59,6 @@ const UserSchema = new mongoose.Schema({
           type: String,
           required: true,
         },
-        householdId : {
-          type: String,
-          required : true
-        },
         email: {
           type: String,
           required: true,
@@ -92,10 +90,6 @@ const UserSchema = new mongoose.Schema({
         householdName: {
           type: String,
           required: true,
-        },
-        householdId : {
-          type: String,
-          required : true
         },
         email: {
           type: String,
