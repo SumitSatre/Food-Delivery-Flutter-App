@@ -42,9 +42,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     final controller = Provider.of<HomeProvider>(context, listen: false);
 
-    return Material(
-        color: Colors.white,
-        child: SingleChildScrollView(
+    return Scaffold(
+      body: SingleChildScrollView(
             child: Column(
               children: [
                 const SizedBox(
@@ -384,6 +383,15 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             ),
+
+      floatingActionButton: ElevatedButton(
+        child: Icon(
+          Icons.shopping_cart
+        ),
+        onPressed: (){
+          Navigator.pushNamed(context, "cart-screen");
+        },
+      ),
         );
     }
 }

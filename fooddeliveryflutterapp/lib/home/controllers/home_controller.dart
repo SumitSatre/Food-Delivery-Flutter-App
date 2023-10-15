@@ -36,6 +36,8 @@ class HomeProvider extends ChangeNotifier{
     if (response.responseCode == 200) {
       print(response.responceString );
       _userModel = UserModel.fromJson(data);
+
+      print("This is address ${userModel?.address?.city ?? "city"}");
       notifyListeners();
     } else {
       notifyListeners();
