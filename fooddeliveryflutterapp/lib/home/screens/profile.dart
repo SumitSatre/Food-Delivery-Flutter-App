@@ -1,5 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fooddeliveryflutterapp/home/controllers/home_controller.dart';
+import 'package:fooddeliveryflutterapp/utils/services/shared_preferences_service.dart';
+import 'package:fooddeliveryflutterapp/utils/snackBar.dart';
+import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -20,20 +24,35 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+
+    final controller = Provider.of<HomeProvider>(context, listen: false);
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Profile',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
+        appBar: AppBar(
+          title: Text(
+            'Profile',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
           ),
+          backgroundColor: Colors.lightBlue,
+          elevation: 0, // Remove app bar shadow
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.logout), // You should use the appropriate logout icon
+              onPressed: () {
+                SharedPreferenceService().checkLogin();
+                showSnackBar(context, "Logout Successfully", Colors.green);
+
+                Navigator.pushNamed(context, "login");
+              },
+            ),
+          ],
         ),
-        backgroundColor: Colors.lightBlue,
-        elevation: 0, // Remove app bar shadow
-      ),
-      body: Container(
+
+        body: Container(
         padding: const EdgeInsets.all(16),
         child: ListView(
           children: [
@@ -55,26 +74,25 @@ class _ProfilePageState extends State<ProfilePage> {
               controller: nameController,
               label: 'Full Name',
               hint: 'Enter your name',
+                onChanged: (val){
+                  controller.updateUserName(val);
+                }
             ),
             buildTextField(
               controller: emailController,
-              label: 'Email',
-              hint: 'Enter your email',
-            ),
-            buildTextField(
-              controller: mobileController,
-              label: 'Phone Number',
-              hint: 'Enter your phone number',
+              label: 'Contact Number',
+              hint: 'Enter your Contact Number',
+                onChanged: (val){
+                  controller.updateUserPhoneNumber(val);
+                }
             ),
             buildTextField(
               controller: cityController,
               label: 'City',
               hint: 'Enter your city',
-            ),
-            buildTextField(
-              controller: ageController,
-              label: 'Age',
-              hint: 'Enter your age',
+              onChanged: (val){
+                controller.updateUserCity(val);
+              }
             ),
             SizedBox(height: 20),
             Row(
@@ -104,7 +122,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    // Add save logic here
+                    controller.updateProfile(context);
+                    showSnackBar(context, "Profile updated successfully", Colors.green);
                   },
                   child: Text(
                     'SAVE',
@@ -133,10 +152,12 @@ class _ProfilePageState extends State<ProfilePage> {
     required TextEditingController controller,
     required String label,
     required String hint,
+    required void Function(String)? onChanged
   }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: TextField(
+        onChanged: onChanged,
         controller: controller,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
