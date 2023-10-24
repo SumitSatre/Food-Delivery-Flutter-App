@@ -3,7 +3,8 @@ import 'package:fooddeliveryflutterapp/Authentication/signupPage.dart';
 import 'package:fooddeliveryflutterapp/Authentication/splash_screen.dart';
 import 'package:fooddeliveryflutterapp/home/screens/cart/cart_screen.dart';
 import 'package:fooddeliveryflutterapp/home/screens/home_screen.dart';
-import 'package:fooddeliveryflutterapp/home/screens/household_detail_screen.dart';
+import 'package:fooddeliveryflutterapp/home/screens/household%20details/household_detail_screen.dart';
+import 'package:fooddeliveryflutterapp/home/screens/orders/orders_screen.dart';
 import 'package:fooddeliveryflutterapp/home/screens/profile.dart';
 
 class AppRoutes {
@@ -15,5 +16,6 @@ class AppRoutes {
     "splash-screen" : (context) => SplashScreen(),
     "house-hold-details-page" : (context) => MyPage(),
     "cart-screen" : (context) => CartPage(),
+    "my-orders-screen" : (context) => MyOrdersPage()
   };
 }

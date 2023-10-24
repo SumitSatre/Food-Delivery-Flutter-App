@@ -58,8 +58,8 @@ class _DishCardState extends State<DishCard> {
                   ),
                   SizedBox(height: 5),
                   Text(
-                    widget.dish.householdName,
-                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 15, color: Colors.grey),
+                    "₹${widget.dish.price.toString()}",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black ),
                   ),
                   SizedBox(height: 5),
                   Row(

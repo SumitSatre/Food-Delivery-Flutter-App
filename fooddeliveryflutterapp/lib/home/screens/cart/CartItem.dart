@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fooddeliveryflutterapp/home/model/user_model.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:fooddeliveryflutterapp/home/controllers/home_controller.dart';
+import 'package:fooddeliveryflutterapp/home/model/household_products_model.dart';
+import 'package:fooddeliveryflutterapp/home/screens/household%20details/dish_card.dart';
+import 'package:provider/provider.dart';
 
 class CartItemPage extends StatefulWidget {
   CartItem cartItem ;
@@ -12,8 +17,12 @@ class CartItemPage extends StatefulWidget {
 
 class _CartItemPageState extends State<CartItemPage> {
 
+
   @override
   Widget build(BuildContext context) {
+    final userModel = Provider.of<HomeProvider>(context).userModel!;
+
+    final controller = Provider.of<HomeProvider>(context, listen: false);
 
     return Container(
       margin: EdgeInsets.all(10),
@@ -32,18 +41,22 @@ class _CartItemPageState extends State<CartItemPage> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            child: Image(
-              image: NetworkImage(widget.cartItem.image),
-              fit: BoxFit.cover,
-              height: 100,
-              width: 80,
+          Expanded(
+            flex: 3,
+            child: Container(
+              child: Image(
+                image: NetworkImage(widget.cartItem.image),
+                fit: BoxFit.cover,
+                height: 100,
+                width: 80,
+              ),
             ),
           ),
 
           SizedBox(width: 10),
 
           Expanded(
+            flex: 4,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -107,7 +120,9 @@ class _CartItemPageState extends State<CartItemPage> {
           ),
           IconButton(
             onPressed: () {
-              // widget.DeleteItemCallback!(widget.cartItem["id"]);
+              controller.removeItemInCart(widget.cartItem);
+              controller.updateProfile(context);
+              print(userModel.id);
             },
             icon: Icon(
               Icons.delete,
