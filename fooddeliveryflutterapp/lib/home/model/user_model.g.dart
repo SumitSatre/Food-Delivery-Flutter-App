@@ -54,6 +54,7 @@ Map<String, dynamic> _$AddressToJson(Address instance) => <String, dynamic>{
 
 CartItem _$CartItemFromJson(Map<String, dynamic> json) => CartItem(
       householdName: json['householdName'] as String,
+      dishId: json['dishId'] as String,
       email: json['email'] as String,
       location: json['location'] as String,
       dishName: json['dishName'] as String,
@@ -64,6 +65,7 @@ CartItem _$CartItemFromJson(Map<String, dynamic> json) => CartItem(
     );
 
 Map<String, dynamic> _$CartItemToJson(CartItem instance) => <String, dynamic>{
+      'dishId': instance.dishId,
       'householdName': instance.householdName,
       'email': instance.email,
       'location': instance.location,

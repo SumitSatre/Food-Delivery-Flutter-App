@@ -13,7 +13,7 @@ class AppRoutes {
     "home" : (context) => HomeScreen(),
     "profile" : (context) => ProfilePage(),
     "splash-screen" : (context) => SplashScreen(),
-    "house-hold-details-page" : (context) => HouseHoldDetailPage(),
+    "house-hold-details-page" : (context) => MyPage(),
     "cart-screen" : (context) => CartPage(),
   };
 }

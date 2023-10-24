@@ -51,6 +51,7 @@ Map<String, dynamic> _$FoodProductsHouseholdModelToJson(
     };
 
 Dish _$DishFromJson(Map<String, dynamic> json) => Dish(
+      id: json['_id'] as String,
       householdName: json['householdName'] as String,
       email: json['email'] as String,
       location: json['location'] as String,
@@ -68,4 +69,5 @@ Map<String, dynamic> _$DishToJson(Dish instance) => <String, dynamic>{
       'price': instance.price,
       'about': instance.about,
       'image': instance.image,
+      '_id': instance.id,
     };

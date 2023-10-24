@@ -63,6 +63,10 @@ const UserSchema = new mongoose.Schema({
           type: String,
           required: true,
         },
+        dishId: {
+          type: String,
+          required: true,
+        },
         location: {
           type: String,
           required: true,

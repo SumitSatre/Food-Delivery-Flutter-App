@@ -89,8 +89,10 @@ class Dish {
   double price;
   String about;
   String image;
+  String id;
 
   Dish({
+    required this.id,
     required this.householdName,
     required this.email,
     required this.location,
@@ -105,6 +107,7 @@ class Dish {
   Map<String, dynamic> toJson() => _$DishToJson(this);
 
   Dish copyWith({
+    String? id,
     String? householdName,
     String? email,
     String? location,
@@ -114,6 +117,7 @@ class Dish {
     String? image,
   }) {
     return Dish(
+      id: id ?? this.id,
       householdName: householdName ?? this.householdName,
       email: email ?? this.email,
       location: location ?? this.location,

@@ -70,17 +70,43 @@ class HomeProvider extends ChangeNotifier{
   void updateProfile(BuildContext context) async {
     String accessToken = await SharedPreferenceService().getAccessToken();
     print(jsonEncode(userModel!.toJson()));
-    ApiHttpResponse response = await callUserPatchMethod(
-        userModel!.toJson(), 'updateUserData', accessToken);
+    ApiHttpResponse response = await callUserPutMethod(
+        userModel!.toJson(), '/updateUserData', accessToken);
     if (response.responseCode == 200) {
       showSnackBar(context, "Profile updated successfully", Colors.green);
     }
     debugPrint(response.responceString);
   }
 
-  Future<void> addItemInCart(CartItem foodItem) async {
+  Future<void> addItemInCart(Dish dish , int quantity) async {
+
     List<CartItem> updatedCart = List<CartItem>.from(_userModel!.myCart ?? []);
-    updatedCart.add(foodItem);
+
+    CartItem foodItem = CartItem(
+        dishId : dish.id,
+        householdName: dish.householdName,
+        email: dish.email,
+        location: dish.location,
+        dishName: dish.dishName,
+        price: dish.price,
+        about: dish.about,
+        image: dish.image,
+        quantity: quantity
+    );
+
+    bool itemAlreadyInCart = false;
+
+    for (int i = 0; i < updatedCart.length; i++) {
+      if(updatedCart[i].dishName == foodItem.dishName){
+        updatedCart[i].quantity += quantity;
+        itemAlreadyInCart = true;
+        break;
+      }
+    }
+
+    if(!itemAlreadyInCart){
+      updatedCart.add(foodItem);
+    }
 
     _userModel = _userModel!.copyWith(
       myCart: updatedCart,
@@ -152,5 +178,33 @@ class HomeProvider extends ChangeNotifier{
     notifyListeners();
   }
 
+  void updateUserName(String? val){
+    if(_userModel != null){
+      _userModel = _userModel!.copyWith(
+        name: val
+      );
+    }
+    notifyListeners();
+  }
+
+  void updateUserPhoneNumber(String? val){
+    if(_userModel != null){
+      _userModel = _userModel!.copyWith(
+          phone: val
+      );
+    }
+    notifyListeners();
+  }
+
+  void updateUserCity(String? val){
+    if(_userModel != null){
+      _userModel = _userModel!.copyWith(
+          address: _userModel!.address!.copyWith(
+            city: val
+          )
+      );
+    }
+    notifyListeners();
+  }
 
 }

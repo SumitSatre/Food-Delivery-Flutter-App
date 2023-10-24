@@ -83,10 +83,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               )
                             ],
                           ),
-                          
-                          TextButton(onPressed: (){
-                            Navigator.pushNamed(context, "cart-screen");
-                          }, child: Text("Cart"))
                         ],
                       ),
                       Stack(

@@ -96,6 +96,7 @@ class Address {
 
 @JsonSerializable()
 class CartItem {
+  String dishId;
   String householdName;
   String email;
   String location;
@@ -106,6 +107,7 @@ class CartItem {
   int quantity;
 
   CartItem({
+    required this.dishId,
     required this.householdName,
     required this.email,
     required this.location,
@@ -122,6 +124,7 @@ class CartItem {
   Map<String, dynamic> toJson() => _$CartItemToJson(this);
 
   CartItem copyWith({
+    String? dishId,
     String? householdName,
     String? email,
     String? location,
@@ -132,6 +135,7 @@ class CartItem {
     int? quantity,
   }) {
     return CartItem(
+      dishId: dishId ?? this.dishId,
       householdName: householdName ?? this.householdName,
       email: email ?? this.email,
       location: location ?? this.location,

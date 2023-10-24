@@ -90,8 +90,9 @@ Future<ApiHttpResponse> callUserGetMethod(String apiUrl, String token) async {
   }
 }
 
-Future<ApiHttpResponse> callUserPatchMethod(
+Future<ApiHttpResponse> callUserPutMethod(
     Map authData, String apiUrl, String token) async {
+  print("This is authData $authData");
   try {
     String url = baseUrl + apiUrl;
 
@@ -100,7 +101,7 @@ Future<ApiHttpResponse> callUserPatchMethod(
       'authorization': 'Bearer $token',
     };
 
-    http.Response response = await http.patch(Uri.parse(url),
+    http.Response response = await http.put(Uri.parse(url),
         body: json.encode(authData), headers: header);
     ApiHttpResponse apiResponse = ApiHttpResponse();
     apiResponse.responseCode = response.statusCode;
