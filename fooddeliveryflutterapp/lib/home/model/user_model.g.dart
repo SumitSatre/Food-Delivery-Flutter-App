@@ -53,8 +53,8 @@ Map<String, dynamic> _$AddressToJson(Address instance) => <String, dynamic>{
     };
 
 CartItem _$CartItemFromJson(Map<String, dynamic> json) => CartItem(
-      householdName: json['householdName'] as String,
       dishId: json['dishId'] as String,
+      householdName: json['householdName'] as String,
       email: json['email'] as String,
       location: json['location'] as String,
       dishName: json['dishName'] as String,
@@ -85,7 +85,7 @@ MyOrder _$MyOrderFromJson(Map<String, dynamic> json) => MyOrder(
       about: json['about'] as String,
       image: json['image'] as String,
       quantity: json['quantity'] as int,
-      date: DateTime.parse(json['date'] as String),
+      date: json['date'] as String,
     );
 
 Map<String, dynamic> _$MyOrderToJson(MyOrder instance) => <String, dynamic>{
@@ -97,5 +97,5 @@ Map<String, dynamic> _$MyOrderToJson(MyOrder instance) => <String, dynamic>{
       'about': instance.about,
       'image': instance.image,
       'quantity': instance.quantity,
-      'date': instance.date.toIso8601String(),
+      'date': instance.date,
     };

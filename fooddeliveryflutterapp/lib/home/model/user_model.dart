@@ -158,7 +158,7 @@ class MyOrder {
   String about;
   String image;
   int quantity;
-  DateTime date;
+  String date;
 
   MyOrder({
     required this.householdName,
@@ -186,7 +186,7 @@ class MyOrder {
     String? about,
     String? image,
     int? quantity,
-    DateTime? date,
+    String? date,
   }) {
     return MyOrder(
       householdName: householdName ?? this.householdName,

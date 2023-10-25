@@ -35,6 +35,12 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
 
               MyOrder cartItem = controller.userModel!.myOrders[index];
 
+              // String dateString = cartItem.date;
+
+              // DateTime dateTime = DateTime.parse(dateString);
+
+              // String formattedDate = DateFormat('MMMM d, y').format(dateTime);
+
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -42,7 +48,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                     Container(
                       height: 25,
                       alignment: Alignment.centerLeft,
-                      child: Text("Ordered At: ${DateFormat('MMMM d, y').format(cartItem.date).toString()}" , style: TextStyle(
+                      child: Text("Ordered At: ${cartItem.date.toString()}" , style: TextStyle(
                         fontSize: 16 , fontWeight: FontWeight.bold , color: Colors.black
                       ),)
                     ),

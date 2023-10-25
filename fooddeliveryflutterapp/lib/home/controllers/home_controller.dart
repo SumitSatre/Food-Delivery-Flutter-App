@@ -8,6 +8,7 @@ import 'package:fooddeliveryflutterapp/utils/api_http_response.dart';
 import 'package:fooddeliveryflutterapp/utils/http_wrappers.dart';
 import 'package:fooddeliveryflutterapp/utils/services/shared_preferences_service.dart';
 import 'package:fooddeliveryflutterapp/utils/snackBar.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class HomeProvider extends ChangeNotifier{
@@ -150,6 +151,11 @@ class HomeProvider extends ChangeNotifier{
 
       List<CartItem> updatedCart = List<CartItem>.from(_userModel!.myCart as Iterable);
 
+      // Get the current DateTime object
+      DateTime dateTime = DateTime.now();
+
+      String formattedDate = DateFormat('d MMM HH:mm').format(dateTime);
+
       for (CartItem item in _userModel!.myCart) {
         myOrdersList.add(MyOrder(
             householdName: item.householdName,
@@ -160,7 +166,7 @@ class HomeProvider extends ChangeNotifier{
             about: item.about,
             image: item.image,
             quantity: item.quantity,
-            date: DateTime.now()
+            date: formattedDate.toString()
         ));
       }
       _userModel = _userModel!.copyWith(

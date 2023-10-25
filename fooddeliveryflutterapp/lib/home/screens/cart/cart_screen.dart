@@ -79,7 +79,7 @@ class _CartPageState extends State<CartPage> {
                           ),
                           SizedBox(height: 5),
                           Text(
-                            "\₹${cartItem.price * cartItem.quantity}",
+                            "₹${cartItem.price * cartItem.quantity}",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
