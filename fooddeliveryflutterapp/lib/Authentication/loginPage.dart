@@ -125,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             controller.login(context);
                           },
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.blueAccent,
+                            backgroundColor: Colors.blueAccent,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
                             ),

@@ -74,7 +74,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           title: Text(
             'Profile',
-            style: Theme.of(context).textTheme.headline4,
+            style: Theme.of(context).textTheme.bodySmall,
           ),
           actions: [
             IconButton(
@@ -252,7 +252,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.blue,
+                          backgroundColor: Colors.blue,
                           padding: const EdgeInsets.symmetric(horizontal: 50),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
