@@ -10,32 +10,28 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       id: json['_id'] as String,
       name: json['name'] as String,
       email: json['email'] as String,
-      password: json['password'] as String,
-      isAdmin: json['isAdmin'] as bool,
+      date: json['date'] as String,
       phone: json['phone'] as String?,
       profilePicture: json['profilePicture'] as String?,
-      date: json['date'] as String?,
       address: json['address'] == null
           ? null
           : Address.fromJson(json['address'] as Map<String, dynamic>),
       role: json['role'] as String,
-      myCart: (json['myCart'] as List<dynamic>?)
-          ?.map((e) => CartItem.fromJson(e as Map<String, dynamic>))
+      myCart: (json['myCart'] as List<dynamic>)
+          .map((e) => CartItem.fromJson(e as Map<String, dynamic>))
           .toList(),
-      myOrders: (json['myOrders'] as List<dynamic>?)
-          ?.map((e) => MyOrder.fromJson(e as Map<String, dynamic>))
+      myOrders: (json['myOrders'] as List<dynamic>)
+          .map((e) => MyOrder.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
-      'id': instance.id,
+      '_id': instance.id,
       'name': instance.name,
       'email': instance.email,
-      'password': instance.password,
-      'isAdmin': instance.isAdmin,
+      'date': instance.date,
       'phone': instance.phone,
       'profilePicture': instance.profilePicture,
-      'date': instance.date,
       'address': instance.address,
       'role': instance.role,
       'myCart': instance.myCart,
@@ -57,87 +53,49 @@ Map<String, dynamic> _$AddressToJson(Address instance) => <String, dynamic>{
     };
 
 CartItem _$CartItemFromJson(Map<String, dynamic> json) => CartItem(
+      dishId: json['dishId'] as String,
       householdName: json['householdName'] as String,
       email: json['email'] as String,
       location: json['location'] as String,
-      about: json['about'] as String?,
-      pricing: Pricing.fromJson(json['pricing'] as Map<String, dynamic>),
-      rating: (json['rating'] as num?)?.toDouble(),
-      kitchenCertification: json['kitchenCertification'] as bool?,
-      deliveryRadius: (json['deliveryRadius'] as num).toDouble(),
-      deliveryFee: (json['deliveryFee'] as num?)?.toDouble(),
-      acceptablePaymentMethods:
-          (json['acceptablePaymentMethods'] as List<dynamic>)
-              .map((e) => e as String)
-              .toList(),
-      foodPreparationTime: (json['foodPreparationTime'] as num?)?.toDouble(),
-      allergenInformation: (json['allergenInformation'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
-      photos:
-          (json['photos'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      dishName: json['dishName'] as String,
+      price: (json['price'] as num).toDouble(),
+      about: json['about'] as String,
+      image: json['image'] as String,
       quantity: json['quantity'] as int,
     );
 
 Map<String, dynamic> _$CartItemToJson(CartItem instance) => <String, dynamic>{
+      'dishId': instance.dishId,
       'householdName': instance.householdName,
       'email': instance.email,
       'location': instance.location,
+      'dishName': instance.dishName,
+      'price': instance.price,
       'about': instance.about,
-      'pricing': instance.pricing,
-      'rating': instance.rating,
-      'kitchenCertification': instance.kitchenCertification,
-      'deliveryRadius': instance.deliveryRadius,
-      'deliveryFee': instance.deliveryFee,
-      'acceptablePaymentMethods': instance.acceptablePaymentMethods,
-      'foodPreparationTime': instance.foodPreparationTime,
-      'allergenInformation': instance.allergenInformation,
-      'photos': instance.photos,
+      'image': instance.image,
       'quantity': instance.quantity,
     };
 
-Pricing _$PricingFromJson(Map<String, dynamic> json) => Pricing(
-      cuisines: (json['cuisines'] as List<dynamic>?)
-          ?.map((e) => Cuisine.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      dishes: (json['dishes'] as List<dynamic>?)
-          ?.map((e) => Dish.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
-
-Map<String, dynamic> _$PricingToJson(Pricing instance) => <String, dynamic>{
-      'cuisines': instance.cuisines,
-      'dishes': instance.dishes,
-    };
-
-Cuisine _$CuisineFromJson(Map<String, dynamic> json) => Cuisine(
-      cuisineName: json['cuisineName'] as String,
-      price: (json['price'] as num).toDouble(),
-    );
-
-Map<String, dynamic> _$CuisineToJson(Cuisine instance) => <String, dynamic>{
-      'cuisineName': instance.cuisineName,
-      'price': instance.price,
-    };
-
-Dish _$DishFromJson(Map<String, dynamic> json) => Dish(
+MyOrder _$MyOrderFromJson(Map<String, dynamic> json) => MyOrder(
+      householdName: json['householdName'] as String,
+      email: json['email'] as String,
+      location: json['location'] as String,
       dishName: json['dishName'] as String,
       price: (json['price'] as num).toDouble(),
-    );
-
-Map<String, dynamic> _$DishToJson(Dish instance) => <String, dynamic>{
-      'dishName': instance.dishName,
-      'price': instance.price,
-    };
-
-MyOrder _$MyOrderFromJson(Map<String, dynamic> json) => MyOrder(
-      items: (json['items'] as List<dynamic>)
-          .map((e) => CartItem.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      orderDate: DateTime.parse(json['orderDate'] as String),
+      about: json['about'] as String,
+      image: json['image'] as String,
+      quantity: json['quantity'] as int,
+      date: json['date'] as String,
     );
 
 Map<String, dynamic> _$MyOrderToJson(MyOrder instance) => <String, dynamic>{
-      'items': instance.items,
-      'orderDate': instance.orderDate.toIso8601String(),
+      'householdName': instance.householdName,
+      'email': instance.email,
+      'location': instance.location,
+      'dishName': instance.dishName,
+      'price': instance.price,
+      'about': instance.about,
+      'image': instance.image,
+      'quantity': instance.quantity,
+      'date': instance.date,
     };

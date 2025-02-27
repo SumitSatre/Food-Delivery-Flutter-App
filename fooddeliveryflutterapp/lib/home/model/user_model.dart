@@ -7,29 +7,25 @@ class UserModel {
   String id;
   String name;
   String email;
-  String password;
-  bool isAdmin;
+  String date;
   String? phone;
   String? profilePicture;
-  String? date;
   Address? address;
   String role;
-  List<CartItem>? myCart;
-  List<MyOrder>? myOrders;
+  List<CartItem> myCart;
+  List<MyOrder> myOrders;
 
   UserModel({
     required this.id,
     required this.name,
     required this.email,
-    required this.password,
-    required this.isAdmin,
+    required this.date,
     this.phone,
     this.profilePicture,
-    this.date,
     this.address,
     required this.role,
-    this.myCart,
-    this.myOrders,
+    required this.myCart,
+    required this.myOrders,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
@@ -41,13 +37,11 @@ class UserModel {
     String? id,
     String? name,
     String? email,
-    String? password,
-    bool? isAdmin,
+    String? date,
     String? phone,
     String? profilePicture,
-    String? date,
     Address? address,
-    String? role,
+     String? role,
     List<CartItem>? myCart,
     List<MyOrder>? myOrders,
   }) {
@@ -55,15 +49,13 @@ class UserModel {
       id: id ?? this.id,
       name: name ?? this.name,
       email: email ?? this.email,
-      password: password ?? this.password,
-      isAdmin: isAdmin ?? this.isAdmin,
-      phone: phone ?? this.phone,
-      profilePicture: profilePicture ?? this.profilePicture,
       date: date ?? this.date,
-      address: address ?? this.address,
       role: role ?? this.role,
+      phone: phone ?? this.phone,
       myCart: myCart ?? this.myCart,
       myOrders: myOrders ?? this.myOrders,
+      address: address ?? this.address,
+      profilePicture: profilePicture ?? this.profilePicture,
     );
   }
 }
@@ -104,35 +96,25 @@ class Address {
 
 @JsonSerializable()
 class CartItem {
+  String dishId;
   String householdName;
   String email;
   String location;
-  String? about;
-  Pricing pricing;
-  double? rating;
-  bool? kitchenCertification;
-  double deliveryRadius;
-  double? deliveryFee;
-  List<String> acceptablePaymentMethods;
-  double? foodPreparationTime;
-  List<String>? allergenInformation;
-  List<String>? photos;
+  String dishName;
+  double price;
+  String about;
+  String image;
   int quantity;
 
   CartItem({
+    required this.dishId,
     required this.householdName,
     required this.email,
     required this.location,
-    this.about,
-    required this.pricing,
-    this.rating,
-    this.kitchenCertification,
-    required this.deliveryRadius,
-    this.deliveryFee,
-    required this.acceptablePaymentMethods,
-    this.foodPreparationTime,
-    this.allergenInformation,
-    this.photos,
+    required this.dishName,
+    required this.price,
+    required this.about,
+    required this.image,
     required this.quantity,
   });
 
@@ -142,126 +124,52 @@ class CartItem {
   Map<String, dynamic> toJson() => _$CartItemToJson(this);
 
   CartItem copyWith({
+    String? dishId,
     String? householdName,
     String? email,
     String? location,
+    String? dishName,
+    double? price,
     String? about,
-    Pricing? pricing,
-    double? rating,
-    bool? kitchenCertification,
-    double? deliveryRadius,
-    double? deliveryFee,
-    List<String>? acceptablePaymentMethods,
-    double? foodPreparationTime,
-    List<String>? allergenInformation,
-    List<String>? photos,
+    String? image,
     int? quantity,
   }) {
     return CartItem(
+      dishId: dishId ?? this.dishId,
       householdName: householdName ?? this.householdName,
       email: email ?? this.email,
       location: location ?? this.location,
+      dishName: dishName ?? this.dishName,
+      price: price ?? this.price,
       about: about ?? this.about,
-      pricing: pricing ?? this.pricing,
-      rating: rating ?? this.rating,
-      kitchenCertification: kitchenCertification ?? this.kitchenCertification,
-      deliveryRadius: deliveryRadius ?? this.deliveryRadius,
-      deliveryFee: deliveryFee ?? this.deliveryFee,
-      acceptablePaymentMethods: acceptablePaymentMethods ?? this.acceptablePaymentMethods,
-      foodPreparationTime: foodPreparationTime ?? this.foodPreparationTime,
-      allergenInformation: allergenInformation ?? this.allergenInformation,
-      photos: photos ?? this.photos,
+      image: image ?? this.image,
       quantity: quantity ?? this.quantity,
     );
   }
 }
 
 @JsonSerializable()
-class Pricing {
-  List<Cuisine>? cuisines;
-  List<Dish>? dishes;
-
-  Pricing({
-    this.cuisines,
-    this.dishes,
-  });
-
-  factory Pricing.fromJson(Map<String, dynamic> json) =>
-      _$PricingFromJson(json);
-
-  Map<String, dynamic> toJson() => _$PricingToJson(this);
-
-  Pricing copyWith({
-    List<Cuisine>? cuisines,
-    List<Dish>? dishes,
-  }) {
-    return Pricing(
-      cuisines: cuisines ?? this.cuisines,
-      dishes: dishes ?? this.dishes,
-    );
-  }
-}
-
-@JsonSerializable()
-class Cuisine {
-  String cuisineName;
-  double price;
-
-  Cuisine({
-    required this.cuisineName,
-    required this.price,
-  });
-
-  factory Cuisine.fromJson(Map<String, dynamic> json) =>
-      _$CuisineFromJson(json);
-
-  Map<String, dynamic> toJson() => _$CuisineToJson(this);
-
-  Cuisine copyWith({
-    String? cuisineName,
-    double? price,
-  }) {
-    return Cuisine(
-      cuisineName: cuisineName ?? this.cuisineName,
-      price: price ?? this.price,
-    );
-  }
-}
-
-@JsonSerializable()
-class Dish {
+class MyOrder {
+  String householdName;
+  String email;
+  String location;
   String dishName;
   double price;
-
-  Dish({
-    required this.dishName,
-    required this.price,
-  });
-
-  factory Dish.fromJson(Map<String, dynamic> json) =>
-      _$DishFromJson(json);
-
-  Map<String, dynamic> toJson() => _$DishToJson(this);
-
-  Dish copyWith({
-    String? dishName,
-    double? price,
-  }) {
-    return Dish(
-      dishName: dishName ?? this.dishName,
-      price: price ?? this.price,
-    );
-  }
-}
-
-@JsonSerializable()
-class MyOrder {
-  List<CartItem> items;
-  DateTime orderDate;
+  String about;
+  String image;
+  int quantity;
+  String date;
 
   MyOrder({
-    required this.items,
-    required this.orderDate,
+    required this.householdName,
+    required this.email,
+    required this.location,
+    required this.dishName,
+    required this.price,
+    required this.about,
+    required this.image,
+    required this.quantity,
+    required this.date,
   });
 
   factory MyOrder.fromJson(Map<String, dynamic> json) =>
@@ -270,12 +178,26 @@ class MyOrder {
   Map<String, dynamic> toJson() => _$MyOrderToJson(this);
 
   MyOrder copyWith({
-    List<CartItem>? items,
-    DateTime? orderDate,
+    String? householdName,
+    String? email,
+    String? location,
+    String? dishName,
+    double? price,
+    String? about,
+    String? image,
+    int? quantity,
+    String? date,
   }) {
     return MyOrder(
-      items: items ?? this.items,
-      orderDate: orderDate ?? this.orderDate,
+      householdName: householdName ?? this.householdName,
+      email: email ?? this.email,
+      location: location ?? this.location,
+      dishName: dishName ?? this.dishName,
+      price: price ?? this.price,
+      about: about ?? this.about,
+      image: image ?? this.image,
+      quantity: quantity ?? this.quantity,
+      date: date ?? this.date,
     );
   }
 }

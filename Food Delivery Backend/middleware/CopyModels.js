@@ -15,7 +15,15 @@ module.exports = async function (doc, next) {
         email: doc.email,
         location: doc.location,
         about: doc.about,
-        pricing: doc.pricing,
+        dishes: (doc.dishes || []).map(dish => ({
+          householdName: dish.householdName,
+          email: dish.email,
+          location: dish.location,
+          dishName: dish.dishName,
+          price: dish.price,
+          about: dish.about,
+          image: dish.image
+        })),
         rating: doc.rating,
         kitchenCertification: doc.kitchenCertification,
         deliveryRadius: doc.deliveryRadius,
@@ -33,7 +41,15 @@ module.exports = async function (doc, next) {
             householdName: doc.householdName,
             location: doc.location,
             about: doc.about,
-            pricing: doc.pricing,
+            dishes: (doc.dishes || []).map(dish => ({
+              householdName: dish.householdName,
+              email: dish.email,
+              location: dish.location,
+              dishName: dish.dishName,
+              price: dish.price,
+              about: dish.about,
+              image: dish.image
+            })),
             rating: doc.rating,
             kitchenCertification: doc.kitchenCertification,
             deliveryRadius: doc.deliveryRadius,
@@ -45,7 +61,7 @@ module.exports = async function (doc, next) {
         },
         { upsert: true }
       );
-    }
+    }    
 
     // Send a success response
     console.log('Data sync and creation completed successfully');

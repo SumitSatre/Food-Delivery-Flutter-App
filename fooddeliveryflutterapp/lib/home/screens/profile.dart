@@ -1,5 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fooddeliveryflutterapp/home/controllers/home_controller.dart';
+import 'package:fooddeliveryflutterapp/utils/services/shared_preferences_service.dart';
+import 'package:fooddeliveryflutterapp/utils/snackBar.dart';
+import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -9,83 +13,39 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  // TextEditingController nameController = TextEditingController();
-  // TextEditingController emailController = TextEditingController();
-  // TextEditingController mobileController = TextEditingController();
-  // TextEditingController cityController = TextEditingController();
-  // TextEditingController ageController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController mobileController = TextEditingController();
+  TextEditingController cityController = TextEditingController();
+  TextEditingController ageController = TextEditingController();
   // File? profilePic;
-
-  // void saveUser() async {
-  //   String name = nameController.text.trim();
-  //   String email = emailController.text.trim();
-  //   String phone = mobileController.text.trim();
-  //   String city = cityController.text.trim();
-  //   String ageString = ageController.text.trim();
-  //   int age = int.parse(ageString);
-
-  //   if (name.isNotEmpty &&
-  //       email.isNotEmpty &&
-  //       phone.isNotEmpty &&
-  //       city.isNotEmpty &&
-  //       ageString.isNotEmpty &&
-  //       profilePic != null) {
-  //     UploadTask uploadTask = FirebaseStorage.instance
-  //         .ref()
-  //         .child("profilepictures")
-  //         .child(const Uuid().v1())
-  //         .putFile(profilePic!);
-
-  //     uploadTask.snapshotEvents.listen((snapshot) {
-  //       double percentage =
-  //           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-  //       debugPrint(percentage.toString());
-  //     });
-
-  //     TaskSnapshot taskSnapshot = await uploadTask;
-  //     String downloadUrl = await taskSnapshot.ref.getDownloadURL();
-
-  //     Map<String, dynamic> userData = {
-  //       "name": name,
-  //       "email": email,
-  //       "phone": phone,
-  //       "city": city,
-  //       "age": age,
-  //       "profilepic": downloadUrl,
-  //     };
-
-  //     FirebaseFirestore.instance.collection("users").add(userData);
-  //     debugPrint("User created!");
-  //   } else {
-  //     debugPrint("Please fill all the fields!");
-  //   }
-  // }
 
   bool isObscurePassword = true;
 
   @override
   Widget build(BuildContext context) {
-    var isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
+
+    final controller = Provider.of<HomeProvider>(context, listen: false);
+
     return Scaffold(
         appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.arrow_back),
-          ),
           title: Text(
             'Profile',
-            style: Theme.of(context).textTheme.bodySmall,
+            style: Theme.of(context).textTheme.headline4,
           ),
           actions: [
             IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.settings,
-                color: Colors.white,
-              ),
+              icon: Icon(Icons.logout), // You should use the appropriate logout icon
+              onPressed: () {
+                SharedPreferenceService().checkLogin();
+                showSnackBar(context, "Logout Successfully", Colors.green);
+
+                Navigator.pushNamed(context, "login");
+              },
             ),
           ],
         ),
+
         body: Container(
             padding: const EdgeInsets.only(left: 15, top: 20, right: 15),
             child: GestureDetector(
@@ -252,7 +212,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
+                          primary: Colors.blue,
                           padding: const EdgeInsets.symmetric(horizontal: 50),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),

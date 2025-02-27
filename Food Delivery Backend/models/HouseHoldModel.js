@@ -15,10 +15,6 @@ const householdSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  password :{
-    type : String,
-    required: [true, "Please , Enter the password!!"]
-},
   location: {
     type: String,
     required: true,
@@ -34,28 +30,34 @@ const householdSchema = new mongoose.Schema({
     required: true,
   },
   
-  pricing: {
-    cuisines: [
-      {
-        cuisineName: {
-          type: String
-        },
-        price: {
-          type: Number
-        },
+  dishes: [
+    {
+      householdName: {
+        type: String,
+        required: true,
       },
-    ],
-    dishes: [
-      {
-        dishName: {
-          type: String
-        },
-        price: {
-          type: Number
-        },
+      email: {
+        type: String,
+        required: true,
       },
-    ],
-  },
+      location: {
+        type: String,
+        required: true,
+      },
+      dishName: {
+        type: String
+      },
+      price: {
+        type: Number
+      },
+      about: {
+        type: String
+      },
+      image:{
+        type : String
+      }
+    },
+  ],
 
   rating: {
     type: Number,

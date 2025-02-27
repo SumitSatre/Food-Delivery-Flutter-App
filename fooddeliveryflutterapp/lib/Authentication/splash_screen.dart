@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
     );
     SharedPreferenceService().checkLogin().then((value) {
       if (value) {
-        Navigator.pushNamed(context, "login"); // HomePage.routeName
+        Navigator.pushNamed(context, "home"); // HomePage.routeName
       } else {
         // Replace this with the route you want to navigate to when not logged in
         Navigator.pushNamed(context, "login");
@@ -41,10 +41,10 @@ class _SplashScreenState extends State<SplashScreen> {
         height: height,
         width: width,
         decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/Onboarding_background.jpg"),
-            fit: BoxFit.cover,
-          ),
+          // image: DecorationImage(
+          //   image: AssetImage("assets/images/Onboarding_background.jpg"),
+          //   fit: BoxFit.cover,
+          // ),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -78,7 +78,7 @@ class _SplashScreenState extends State<SplashScreen> {
               width: width * 0.75,
               height: height * 0.13,
               child: Text(
-                'eKalakaar',
+                'Food Delivery App',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.blue, // Change the color to your preference
@@ -91,7 +91,7 @@ class _SplashScreenState extends State<SplashScreen> {
               width: width * 0.73,
               height: height * 0.06,
               child: Text(
-                'Art Beyond Entertainment',
+                'Eat Healthy',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.black,
